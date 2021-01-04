@@ -26,6 +26,30 @@ namespace Wasm\Vec {
         /** @throw \Exception */
         public function offsetUnset(mixed $offset): void {}
     }
+
+    final class TableType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrTabletypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
+
+    final class MemoryType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrMemorytypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
 }
 
 namespace {

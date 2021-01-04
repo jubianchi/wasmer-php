@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 317baece6ad7fd63c75e9b136ce0aee64626c6bd */
+ * Stub hash: 48da8c0d6f8f3d567d0fa8cb09e895f6a8c12fe4 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -227,6 +227,34 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_Wasm_Vec_GlobalType_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_TableType___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_MASK(0, sizeOrTabletypes, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_Wasm_Vec_TableType_count arginfo_class_Wasm_Vec_ValType_count
+
+#define arginfo_class_Wasm_Vec_TableType_offsetExists arginfo_class_Wasm_Vec_ValType_offsetExists
+
+#define arginfo_class_Wasm_Vec_TableType_offsetGet arginfo_class_Wasm_Vec_ValType_offsetGet
+
+#define arginfo_class_Wasm_Vec_TableType_offsetSet arginfo_class_Wasm_Vec_ValType_offsetSet
+
+#define arginfo_class_Wasm_Vec_TableType_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_MemoryType___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_MASK(0, sizeOrMemorytypes, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_Wasm_Vec_MemoryType_count arginfo_class_Wasm_Vec_ValType_count
+
+#define arginfo_class_Wasm_Vec_MemoryType_offsetExists arginfo_class_Wasm_Vec_ValType_offsetExists
+
+#define arginfo_class_Wasm_Vec_MemoryType_offsetGet arginfo_class_Wasm_Vec_ValType_offsetGet
+
+#define arginfo_class_Wasm_Vec_MemoryType_offsetSet arginfo_class_Wasm_Vec_ValType_offsetSet
+
+#define arginfo_class_Wasm_Vec_MemoryType_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
+
 
 ZEND_FUNCTION(wasm_config_new);
 ZEND_FUNCTION(wasm_engine_new);
@@ -298,6 +326,18 @@ ZEND_METHOD(Wasm_Vec_GlobalType, offsetExists);
 ZEND_METHOD(Wasm_Vec_GlobalType, offsetGet);
 ZEND_METHOD(Wasm_Vec_GlobalType, offsetSet);
 ZEND_METHOD(Wasm_Vec_GlobalType, offsetUnset);
+ZEND_METHOD(Wasm_Vec_TableType, __construct);
+ZEND_METHOD(Wasm_Vec_TableType, count);
+ZEND_METHOD(Wasm_Vec_TableType, offsetExists);
+ZEND_METHOD(Wasm_Vec_TableType, offsetGet);
+ZEND_METHOD(Wasm_Vec_TableType, offsetSet);
+ZEND_METHOD(Wasm_Vec_TableType, offsetUnset);
+ZEND_METHOD(Wasm_Vec_MemoryType, __construct);
+ZEND_METHOD(Wasm_Vec_MemoryType, count);
+ZEND_METHOD(Wasm_Vec_MemoryType, offsetExists);
+ZEND_METHOD(Wasm_Vec_MemoryType, offsetGet);
+ZEND_METHOD(Wasm_Vec_MemoryType, offsetSet);
+ZEND_METHOD(Wasm_Vec_MemoryType, offsetUnset);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -381,5 +421,27 @@ static const zend_function_entry class_Wasm_Vec_GlobalType_methods[] = {
 	ZEND_ME(Wasm_Vec_GlobalType, offsetGet, arginfo_class_Wasm_Vec_GlobalType_offsetGet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_GlobalType, offsetSet, arginfo_class_Wasm_Vec_GlobalType_offsetSet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_GlobalType, offsetUnset, arginfo_class_Wasm_Vec_GlobalType_offsetUnset, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Wasm_Vec_TableType_methods[] = {
+	ZEND_ME(Wasm_Vec_TableType, __construct, arginfo_class_Wasm_Vec_TableType___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_TableType, count, arginfo_class_Wasm_Vec_TableType_count, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_TableType, offsetExists, arginfo_class_Wasm_Vec_TableType_offsetExists, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_TableType, offsetGet, arginfo_class_Wasm_Vec_TableType_offsetGet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_TableType, offsetSet, arginfo_class_Wasm_Vec_TableType_offsetSet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_TableType, offsetUnset, arginfo_class_Wasm_Vec_TableType_offsetUnset, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Wasm_Vec_MemoryType_methods[] = {
+	ZEND_ME(Wasm_Vec_MemoryType, __construct, arginfo_class_Wasm_Vec_MemoryType___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_MemoryType, count, arginfo_class_Wasm_Vec_MemoryType_count, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_MemoryType, offsetExists, arginfo_class_Wasm_Vec_MemoryType_offsetExists, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_MemoryType, offsetGet, arginfo_class_Wasm_Vec_MemoryType_offsetGet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_MemoryType, offsetSet, arginfo_class_Wasm_Vec_MemoryType_offsetSet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_MemoryType, offsetUnset, arginfo_class_Wasm_Vec_MemoryType_offsetUnset, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

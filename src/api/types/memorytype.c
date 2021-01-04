@@ -1,13 +1,17 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(limits)
 WASMER_IMPORT_RESOURCE(memorytype)
 WASMER_IMPORT_RESOURCE(valtype)
+
+WASMER_DECLARE_TYPE(MemoryType, MEMORYTYPE, memorytype)
 
 PHP_FUNCTION (wasm_memorytype_new) {
     zval *limits_val;
@@ -26,8 +30,6 @@ PHP_FUNCTION (wasm_memorytype_new) {
     RETURN_RES(memorytype_res);
 }
 
-WASMER_DELETE_WITHOUT_DTOR(memorytype)
-
 PHP_FUNCTION (wasm_memorytype_limits) {
     zval *memorytype_val;
 
@@ -45,8 +47,6 @@ PHP_FUNCTION (wasm_memorytype_limits) {
     RETURN_RES(limits_res);
 }
 
-WASMER_COPY(memorytype)
-
 PHP_FUNCTION (wasm_memorytype_as_externtype) {
     zval *memorytype_val;
 
@@ -63,5 +63,3 @@ PHP_FUNCTION (wasm_memorytype_as_externtype) {
 
     RETURN_RES(externtype_res);
 }
-
-// TODO(jubianchi): Implement wasm_memorytype_vec_t

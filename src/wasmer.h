@@ -1,15 +1,20 @@
-typedef struct wasm_valtype_vec_c {
-    wasm_valtype_vec_t vec;
-    zend_object std;
-} wasm_valtype_vec_c;
+#define Z_WASMER_DECLARE_CE_STRUCT(name)\
+typedef struct wasm_##name##_vec_c {\
+    wasm_##name##_vec_t vec;\
+    zend_object std;\
+} wasm_##name##_vec_c;
 
-#define Z_WASM_VALTYPE_VEC_P(zv) \
-    ((wasm_valtype_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_valtype_vec_c, std)))
+#define Z_WASMER_DECLARE_CE_P(name, zv)\
+    ((wasm_##name##_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_##name##_vec_c, std)))
 
-typedef struct wasm_globaltype_vec_c {
-    wasm_globaltype_vec_t vec;
-    zend_object std;
-} wasm_globaltype_vec_c;
+Z_WASMER_DECLARE_CE_STRUCT(valtype)
+#define Z_WASM_VALTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(valtype, zv)
 
-#define Z_WASM_GLOBALTYPE_VEC_P(zv) \
-    ((wasm_globaltype_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_globaltype_vec_c, std)))
+Z_WASMER_DECLARE_CE_STRUCT(globaltype)
+#define Z_WASM_GLOBALTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(globaltype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(tabletype)
+#define Z_WASM_TABLETYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(tabletype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(memorytype)
+#define Z_WASM_MEMORYTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(memorytype, zv)

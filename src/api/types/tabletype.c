@@ -1,13 +1,17 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(limits)
 WASMER_IMPORT_RESOURCE(tabletype)
 WASMER_IMPORT_RESOURCE(valtype)
+
+WASMER_DECLARE_TYPE(TableType, TABLETYPE, tabletype)
 
 PHP_FUNCTION (wasm_tabletype_new) {
     zval *valtype_val;
@@ -28,8 +32,6 @@ PHP_FUNCTION (wasm_tabletype_new) {
 
     RETURN_RES(tabletype_res);
 }
-
-WASMER_DELETE_WITHOUT_DTOR(tabletype)
 
 PHP_FUNCTION (wasm_tabletype_element) {
     zval *tabletype_val;
@@ -65,8 +67,6 @@ PHP_FUNCTION (wasm_tabletype_limits) {
     RETURN_RES(limits_res);
 }
 
-WASMER_COPY(tabletype)
-
 PHP_FUNCTION (wasm_tabletype_as_externtype) {
     zval *tabletype_val;
 
@@ -83,5 +83,3 @@ PHP_FUNCTION (wasm_tabletype_as_externtype) {
 
     RETURN_RES(externtype_res);
 }
-
-// TODO(jubianchi): Implement wasm_tabletype_vec_t

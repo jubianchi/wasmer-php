@@ -61,6 +61,30 @@ zend_object *wasm_globaltype_vec_create(zend_class_entry *ce)
     return &wasm_globaltype_vec->std;
 }
 
+zend_class_entry *wasm_vec_tabletype_ce;
+static zend_object_handlers wasm_tabletype_vec_object_handlers;
+zend_object *wasm_tabletype_vec_create(zend_class_entry *ce)
+{
+    wasm_tabletype_vec_c *wasm_tabletype_vec = zend_object_alloc(sizeof(wasm_tabletype_vec_c), ce);
+
+    zend_object_std_init(&wasm_tabletype_vec->std, ce);
+    wasm_tabletype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
+
+    return &wasm_tabletype_vec->std;
+}
+
+zend_class_entry *wasm_vec_memorytype_ce;
+static zend_object_handlers wasm_memorytype_vec_object_handlers;
+zend_object *wasm_memorytype_vec_create(zend_class_entry *ce)
+{
+    wasm_memorytype_vec_c *wasm_memorytype_vec = zend_object_alloc(sizeof(wasm_memorytype_vec_c), ce);
+
+    zend_object_std_init(&wasm_memorytype_vec->std, ce);
+    wasm_memorytype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
+
+    return &wasm_memorytype_vec->std;
+}
+
 /*
 static zend_class_entry* fetch_internal_class(const char* class_name)
 {
@@ -120,27 +144,10 @@ PHP_MINIT_FUNCTION (wasmer) {
 
     zend_class_entry ce;
 
-    INIT_NS_CLASS_ENTRY(ce, "Wasm\\Vec", "ValType", class_Wasm_Vec_ValType_methods)
-    wasm_vec_valtype_ce = zend_register_internal_class(&ce);
-    wasm_vec_valtype_ce->ce_flags |= ZEND_ACC_FINAL;
-    wasm_vec_valtype_ce->create_object = wasm_valtype_vec_create;
-
-    memcpy(&wasm_valtype_vec_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
-    wasm_valtype_vec_object_handlers.offset = XtOffsetOf(struct wasm_valtype_vec_c, std);
-
-    zend_class_implements(wasm_vec_valtype_ce, 1, zend_ce_countable /*fetch_internal_class("countable")*/);
-    zend_class_implements(wasm_vec_valtype_ce, 1, zend_ce_arrayaccess /*fetch_internal_class("arrayaccess")*/);
-
-    INIT_NS_CLASS_ENTRY(ce, "Wasm\\Vec", "GlobalType", class_Wasm_Vec_GlobalType_methods)
-    wasm_vec_globaltype_ce = zend_register_internal_class(&ce);
-    wasm_vec_globaltype_ce->ce_flags |= ZEND_ACC_FINAL;
-    wasm_vec_globaltype_ce->create_object = wasm_globaltype_vec_create;
-
-    memcpy(&wasm_globaltype_vec_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
-    wasm_globaltype_vec_object_handlers.offset = XtOffsetOf(struct wasm_globaltype_vec_c, std);
-
-    zend_class_implements(wasm_vec_globaltype_ce, 1, zend_ce_countable /*fetch_internal_class("countable")*/);
-    zend_class_implements(wasm_vec_globaltype_ce, 1, zend_ce_arrayaccess /*fetch_internal_class("arrayaccess")*/);
+    Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
+    Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
+    Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
+    Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
 
     return SUCCESS;
 }

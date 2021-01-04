@@ -35,3 +35,15 @@ le_wasm_##name = zend_register_list_destructors_ex(\
 if (le_wasm_engine == FAILURE) {\
     return FAILURE;\
 }
+
+#define Z_WASMER_DECLARE_VEC_CLASS(class_name, name)\
+INIT_NS_CLASS_ENTRY(ce, "Wasm\\Vec", #class_name, class_Wasm_Vec_##class_name##_methods)\
+wasm_vec_##name##_ce = zend_register_internal_class(&ce);\
+wasm_vec_##name##_ce->ce_flags |= ZEND_ACC_FINAL;\
+wasm_vec_##name##_ce->create_object = wasm_##name##_vec_create;\
+\
+memcpy(&wasm_##name##_vec_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));\
+wasm_##name##_vec_object_handlers.offset = XtOffsetOf(struct wasm_##name##_vec_c, std);\
+\
+zend_class_implements(wasm_vec_##name##_ce, 1, zend_ce_countable);\
+zend_class_implements(wasm_vec_##name##_ce, 1, zend_ce_arrayaccess);

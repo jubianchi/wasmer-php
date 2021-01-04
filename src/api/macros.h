@@ -120,8 +120,12 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
     ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)\
             Z_PARAM_LONG(offset)\
     ZEND_PARSE_PARAMETERS_END();\
+    \
     wasm_##name##_vec_c *wasm_##name##_vec = Z_WASM_##macro##_VEC_P(ZEND_THIS);\
     \
+    if(offset >= wasm_##name##_vec->vec.size) {\
+        zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\" #class_name "::offsetGet($offset) index out of bounds");\
+    }\
     if(wasm_##name##_vec->vec.data[offset] == NULL) {\
         RETURN_NULL();\
     }\
@@ -146,6 +150,9 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetSet) {\
     \
     wasm_##name##_vec_c *wasm_##name##_vec = Z_WASM_##macro##_VEC_P(ZEND_THIS);\
     \
+    if(offset >= wasm_##name##_vec->vec.size) {\
+        zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\" #class_name "::offsetSet($offset) index out of bounds");\
+    }\
     wasm_##name##_vec->vec.data[offset] = Z_RES_P(name##_val)->ptr;\
 }
 

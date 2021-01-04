@@ -12,8 +12,12 @@ $valtypes = [$globaltype1, $globaltype2];
 $vec = new Wasm\Vec\GlobalType($valtypes);
 var_dump($vec[0]);
 var_dump($vec[1]);
-var_dump($vec[2]);
+try {
+    var_dump($vec[2]);
+} catch (Exception $e) {
+    var_dump($e->getMessage());
+}
 --EXPECTF--
 resource(%d) of type (wasm_globaltype_t)
 resource(%d) of type (wasm_globaltype_t)
-NULL
+string(59) "Wasm\Vec\GlobalType::offsetGet($offset) index out of bounds"

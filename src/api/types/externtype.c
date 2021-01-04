@@ -1,8 +1,10 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(functype)
@@ -10,7 +12,7 @@ WASMER_IMPORT_RESOURCE(globaltype)
 WASMER_IMPORT_RESOURCE(memorytype)
 WASMER_IMPORT_RESOURCE(tabletype)
 
-WASMER_DELETE_WITHOUT_DTOR(externtype)
+WASMER_DECLARE_TYPE(ExternType, EXTERNTYPE, externtype)
 
 PHP_FUNCTION (wasm_externtype_kind) {
     zval *externtype_val;
@@ -93,7 +95,3 @@ PHP_FUNCTION (wasm_externtype_as_tabletype) {
 
     RETURN_RES(tabletype_res);
 }
-
-WASMER_COPY(externtype)
-
-// TODO(jubianchi): Implement wasm_externtype_vec_t

@@ -18,3 +18,12 @@ Z_WASMER_DECLARE_CE_STRUCT(tabletype)
 
 Z_WASMER_DECLARE_CE_STRUCT(memorytype)
 #define Z_WASM_MEMORYTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(memorytype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(externtype)
+#define Z_WASM_EXTERNTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(externtype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(importtype)
+#define Z_WASM_IMPORTTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(importtype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(exporttype)
+#define Z_WASM_EXPORTTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(exporttype, zv)

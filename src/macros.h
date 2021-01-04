@@ -47,3 +47,16 @@ wasm_##name##_vec_object_handlers.offset = XtOffsetOf(struct wasm_##name##_vec_c
 \
 zend_class_implements(wasm_vec_##name##_ce, 1, zend_ce_countable);\
 zend_class_implements(wasm_vec_##name##_ce, 1, zend_ce_arrayaccess);
+
+#define Z_WASMER_DECLARE_CE(name)\
+zend_class_entry *wasm_vec_##name##_ce;\
+static zend_object_handlers wasm_##name##_vec_object_handlers;\
+zend_object *wasm_##name##_vec_create(zend_class_entry *ce)\
+{\
+    wasm_##name##_vec_c *wasm_##name##_vec = zend_object_alloc(sizeof(wasm_##name##_vec_c), ce);\
+    \
+    zend_object_std_init(&wasm_##name##_vec->std, ce);\
+    wasm_##name##_vec->std.handlers = &wasm_##name##_vec_object_handlers;\
+    \
+    return &wasm_##name##_vec->std;\
+}

@@ -50,6 +50,42 @@ namespace Wasm\Vec {
         /** @throw \Exception */
         public function offsetUnset(mixed $offset): void {}
     }
+
+    final class ExternType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrExterntypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
+
+    final class ImportType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrImporttypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
+
+    final class ExportType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrExporttypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
 }
 
 namespace {

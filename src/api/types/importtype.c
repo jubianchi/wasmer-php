@@ -1,11 +1,15 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(importtype)
+
+WASMER_DECLARE_TYPE(ImportType, IMPORTTYPE, importtype)
 
 PHP_FUNCTION (wasm_importtype_new) {
     char *module;
@@ -37,8 +41,6 @@ PHP_FUNCTION (wasm_importtype_new) {
 
     RETURN_RES(importtype_res);
 }
-
-WASMER_DELETE_WITHOUT_DTOR(importtype)
 
 PHP_FUNCTION (wasm_importtype_module) {
     zval *importtype_val;
@@ -84,7 +86,3 @@ PHP_FUNCTION (wasm_importtype_type) {
 
     RETURN_RES(externtype_res);
 }
-
-WASMER_COPY(importtype)
-
-// TODO(jubianchi): Implement wasm_importtype_vec_t

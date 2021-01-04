@@ -37,53 +37,13 @@ WASMER_RESOURCE_LE(trap)
 WASMER_RESOURCE_LE(val)
 WASMER_RESOURCE_LE(valtype)
 
-zend_class_entry *wasm_vec_valtype_ce;
-static zend_object_handlers wasm_valtype_vec_object_handlers;
-zend_object *wasm_valtype_vec_create(zend_class_entry *ce)
-{
-    wasm_valtype_vec_c *wasm_valtype_vec = zend_object_alloc(sizeof(wasm_valtype_vec_c), ce);
-
-    zend_object_std_init(&wasm_valtype_vec->std, ce);
-    wasm_valtype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
-
-    return &wasm_valtype_vec->std;
-}
-
-zend_class_entry *wasm_vec_globaltype_ce;
-static zend_object_handlers wasm_globaltype_vec_object_handlers;
-zend_object *wasm_globaltype_vec_create(zend_class_entry *ce)
-{
-    wasm_globaltype_vec_c *wasm_globaltype_vec = zend_object_alloc(sizeof(wasm_globaltype_vec_c), ce);
-
-    zend_object_std_init(&wasm_globaltype_vec->std, ce);
-    wasm_globaltype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
-
-    return &wasm_globaltype_vec->std;
-}
-
-zend_class_entry *wasm_vec_tabletype_ce;
-static zend_object_handlers wasm_tabletype_vec_object_handlers;
-zend_object *wasm_tabletype_vec_create(zend_class_entry *ce)
-{
-    wasm_tabletype_vec_c *wasm_tabletype_vec = zend_object_alloc(sizeof(wasm_tabletype_vec_c), ce);
-
-    zend_object_std_init(&wasm_tabletype_vec->std, ce);
-    wasm_tabletype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
-
-    return &wasm_tabletype_vec->std;
-}
-
-zend_class_entry *wasm_vec_memorytype_ce;
-static zend_object_handlers wasm_memorytype_vec_object_handlers;
-zend_object *wasm_memorytype_vec_create(zend_class_entry *ce)
-{
-    wasm_memorytype_vec_c *wasm_memorytype_vec = zend_object_alloc(sizeof(wasm_memorytype_vec_c), ce);
-
-    zend_object_std_init(&wasm_memorytype_vec->std, ce);
-    wasm_memorytype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
-
-    return &wasm_memorytype_vec->std;
-}
+Z_WASMER_DECLARE_CE(valtype)
+Z_WASMER_DECLARE_CE(globaltype)
+Z_WASMER_DECLARE_CE(tabletype)
+Z_WASMER_DECLARE_CE(memorytype)
+Z_WASMER_DECLARE_CE(externtype)
+Z_WASMER_DECLARE_CE(importtype)
+Z_WASMER_DECLARE_CE(exporttype)
 
 /*
 static zend_class_entry* fetch_internal_class(const char* class_name)
@@ -148,6 +108,9 @@ PHP_MINIT_FUNCTION (wasmer) {
     Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
     Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
     Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
+    Z_WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
+    Z_WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
+    Z_WASMER_DECLARE_VEC_CLASS(ExportType, exporttype)
 
     return SUCCESS;
 }

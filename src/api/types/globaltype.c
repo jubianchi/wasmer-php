@@ -1,12 +1,17 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(globaltype)
 WASMER_IMPORT_RESOURCE(valtype)
+
+
+WASMER_DECLARE_TYPE(GlobalType, GLOBALTYPE, globaltype)
 
 PHP_FUNCTION (wasm_globaltype_new) {
     zval *valtype_val;
@@ -28,8 +33,6 @@ PHP_FUNCTION (wasm_globaltype_new) {
 
     RETURN_RES(globaltype_res);
 }
-
-WASMER_DELETE_WITHOUT_DTOR(globaltype)
 
 PHP_FUNCTION (wasm_globaltype_content) {
     zval *globaltype_val;
@@ -62,8 +65,6 @@ PHP_FUNCTION (wasm_globaltype_mutability) {
     RETURN_LONG(mutability);
 }
 
-WASMER_COPY(globaltype)
-
 PHP_FUNCTION (wasm_globaltype_as_externtype) {
     zval *globaltype_val;
 
@@ -80,5 +81,3 @@ PHP_FUNCTION (wasm_globaltype_as_externtype) {
 
     RETURN_RES(externtype_res);
 }
-
-// TODO(jubianchi): Implement wasm_globaltype_vec_t

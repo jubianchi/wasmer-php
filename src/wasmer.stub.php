@@ -2,16 +2,28 @@
 
 /** @generate-function-entries */
 
-// TODO(jubianchi): Add valtype_vec
 namespace Wasm\Vec {
     final class ValType implements \Countable, \ArrayAccess {
-        public function __construct(?int $size = null, ?array $valtypes = null) {}
+        public function __construct(array|int|null $sizeOrValtypes = null) {}
         public function count(): int {}
         public function offsetExists(mixed $offset): bool {}
         /** @return resource */
         public function offsetGet(mixed $offset): mixed {}
         /** @param resource $value */
         public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
+
+    final class GlobalType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrGlobaltypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
         public function offsetUnset(mixed $offset): void {}
     }
 }

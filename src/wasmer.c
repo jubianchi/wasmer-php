@@ -38,12 +38,10 @@ WASMER_RESOURCE_LE(val)
 WASMER_RESOURCE_LE(valtype)
 
 zend_class_entry *wasm_vec_valtype_ce;
-
 static zend_object_handlers wasm_valtype_vec_object_handlers;
-
 zend_object *wasm_valtype_vec_create(zend_class_entry *ce)
 {
-    wasm_valtype_vec_t_t *wasm_valtype_vec = zend_object_alloc(sizeof(wasm_valtype_vec_t_t), ce);
+    wasm_valtype_vec_c *wasm_valtype_vec = zend_object_alloc(sizeof(wasm_valtype_vec_c), ce);
 
     zend_object_std_init(&wasm_valtype_vec->std, ce);
     wasm_valtype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
@@ -51,6 +49,19 @@ zend_object *wasm_valtype_vec_create(zend_class_entry *ce)
     return &wasm_valtype_vec->std;
 }
 
+zend_class_entry *wasm_vec_globaltype_ce;
+static zend_object_handlers wasm_globaltype_vec_object_handlers;
+zend_object *wasm_globaltype_vec_create(zend_class_entry *ce)
+{
+    wasm_globaltype_vec_c *wasm_globaltype_vec = zend_object_alloc(sizeof(wasm_globaltype_vec_c), ce);
+
+    zend_object_std_init(&wasm_globaltype_vec->std, ce);
+    wasm_globaltype_vec->std.handlers = &wasm_valtype_vec_object_handlers;
+
+    return &wasm_globaltype_vec->std;
+}
+
+/*
 static zend_class_entry* fetch_internal_class(const char* class_name)
 {
     zend_class_entry* ce;
@@ -61,6 +72,7 @@ static zend_class_entry* fetch_internal_class(const char* class_name)
 
     return NULL;
 }
+*/
 
 PHP_MINIT_FUNCTION (wasmer) {
     WASMER_RESOURCE_REGISTER(config)
@@ -114,10 +126,21 @@ PHP_MINIT_FUNCTION (wasmer) {
     wasm_vec_valtype_ce->create_object = wasm_valtype_vec_create;
 
     memcpy(&wasm_valtype_vec_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
-    wasm_valtype_vec_object_handlers.offset = XtOffsetOf(struct wasm_valtype_vec_t_t, std);
+    wasm_valtype_vec_object_handlers.offset = XtOffsetOf(struct wasm_valtype_vec_c, std);
 
     zend_class_implements(wasm_vec_valtype_ce, 1, zend_ce_countable /*fetch_internal_class("countable")*/);
     zend_class_implements(wasm_vec_valtype_ce, 1, zend_ce_arrayaccess /*fetch_internal_class("arrayaccess")*/);
+
+    INIT_NS_CLASS_ENTRY(ce, "Wasm\\Vec", "GlobalType", class_Wasm_Vec_GlobalType_methods)
+    wasm_vec_globaltype_ce = zend_register_internal_class(&ce);
+    wasm_vec_globaltype_ce->ce_flags |= ZEND_ACC_FINAL;
+    wasm_vec_globaltype_ce->create_object = wasm_globaltype_vec_create;
+
+    memcpy(&wasm_globaltype_vec_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    wasm_globaltype_vec_object_handlers.offset = XtOffsetOf(struct wasm_globaltype_vec_c, std);
+
+    zend_class_implements(wasm_vec_globaltype_ce, 1, zend_ce_countable /*fetch_internal_class("countable")*/);
+    zend_class_implements(wasm_vec_globaltype_ce, 1, zend_ce_arrayaccess /*fetch_internal_class("arrayaccess")*/);
 
     return SUCCESS;
 }

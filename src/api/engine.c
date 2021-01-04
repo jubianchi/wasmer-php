@@ -26,12 +26,9 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
             Z_PARAM_RESOURCE(config_val)
     ZEND_PARSE_PARAMETERS_END();
 
-    if ((config_res = zend_fetch_resource(Z_RES_P(config_val), le_wasm_config_name,
-                                          le_wasm_config)) == NULL) {
-        RETURN_THROWS();
-    }
+    WASMER_FETCH_RESOURCE(config)
 
-    wasm_engine_t *engine = wasm_engine_new_with_config((wasm_config_t *) config_res);
+    wasm_engine_t *engine = wasm_engine_new_with_config(Z_RES_P(config_val)->ptr);
 
     zend_resource *engine_res;
     engine_res = zend_register_resource((void *) engine, le_wasm_engine);
@@ -46,10 +43,7 @@ PHP_FUNCTION (wasm_engine_delete) {
             Z_PARAM_RESOURCE(engine_val)
     ZEND_PARSE_PARAMETERS_END();
 
-    if (zend_fetch_resource(Z_RES_P(engine_val), le_wasm_engine_name,
-                            le_wasm_engine) == NULL) {
-        RETURN_THROWS();
-    }
+    WASMER_FETCH_RESOURCE(engine)
 
     zend_list_close(Z_RES_P(engine_val));
 

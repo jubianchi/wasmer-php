@@ -14,7 +14,7 @@ if test "$PHP_WASMER" != "no"; then
 
     WASMER_API_OBJECTS="src/api/objects/extern.c src/api/objects/foreign.c src/api/objects/frame.c src/api/objects/func.c src/api/objects/global.c src/api/objects/instance.c src/api/objects/memory.c src/api/objects/module.c src/api/objects/table.c src/api/objects/trap.c src/api/objects/val.c"
     WASMER_API_TYPES="src/api/types/exporttype.c src/api/types/externtype.c src/api/types/functype.c src/api/types/globaltype.c src/api/types/importtype.c src/api/types/limits.c src/api/types/memorytype.c src/api/types/tabletype.c src/api/types/valkind.c src/api/types/valtype.c"
-    WASMER_API_SOURCES="$WASMER_API_OBJECTS $WASMER_API_TYPES src/api/config.c src/api/engine.c src/api/store.c"
+    WASMER_API_SOURCES="$WASMER_API_OBJECTS $WASMER_API_TYPES src/api/config.c src/api/engine.c src/api/store.c src/api/wat.c"
 
     PHP_NEW_EXTENSION(wasmer, src/wasmer.c $WASMER_API_SOURCES, $ext_shared,, $WASMER_CFLAGS)
 

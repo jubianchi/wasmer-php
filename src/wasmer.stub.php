@@ -439,4 +439,9 @@ namespace {
     // Module Instances
 
     // TODO(jubianchi): Add instance
+
+    // Wasmer API
+
+    /** @return resource */
+    function wat2wasm(string $wat): string {}
 }

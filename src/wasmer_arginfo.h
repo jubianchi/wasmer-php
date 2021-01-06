@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: eb4ef846ab844ead6075a7ab29298e0844d65aeb */
+ * Stub hash: 6642579323100d7460f6b2cf6f78c8716b5400a3 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -189,6 +189,10 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_wasm_module_serialize arginfo_wasm_module_new
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wat2wasm, 0, 1, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, wat, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_ValType___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_MASK(0, sizeOrValtypes, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
 ZEND_END_ARG_INFO()
@@ -356,6 +360,7 @@ ZEND_FUNCTION(wasm_module_validate);
 ZEND_FUNCTION(wasm_module_imports);
 ZEND_FUNCTION(wasm_module_exports);
 ZEND_FUNCTION(wasm_module_serialize);
+ZEND_FUNCTION(wat2wasm);
 ZEND_METHOD(Wasm_Vec_ValType, __construct);
 ZEND_METHOD(Wasm_Vec_ValType, count);
 ZEND_METHOD(Wasm_Vec_ValType, offsetExists);
@@ -459,6 +464,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_module_imports, arginfo_wasm_module_imports)
 	ZEND_FE(wasm_module_exports, arginfo_wasm_module_exports)
 	ZEND_FE(wasm_module_serialize, arginfo_wasm_module_serialize)
+	ZEND_FE(wat2wasm, arginfo_wat2wasm)
 	ZEND_FE_END
 };
 

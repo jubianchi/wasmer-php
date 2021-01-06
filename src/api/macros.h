@@ -23,7 +23,7 @@ PHP_FUNCTION (wasm_##name##_copy) {\
     wasm_##name##_t *name = wasm_##name##_copy(Z_RES_P(name##_val)->ptr);\
     \
     zend_resource *name##_res;\
-    name##_res = zend_register_resource((void *) name, le_wasm_##name);\
+    name##_res = zend_register_resource(name, le_wasm_##name);\
     \
     RETURN_RES(name##_res);\
 }
@@ -45,6 +45,7 @@ PHP_FUNCTION (wasm_##name##_delete) {\
     RETURN_TRUE;\
 }
 
+// TODO(jubianchi): Implement clone (via wasm_vec_##name##_copy)
 #define WASMER_DECLARE_VEC(class_name, macro, name)\
 WASMER_DECLARE_VEC_CONSTRUCT(class_name, name, macro)\
 WASMER_DECLARE_VEC_COUNT(class_name, macro, name)\
@@ -53,7 +54,6 @@ WASMER_DECLARE_VEC_OFFSET_GET(class_name, macro, name)\
 WASMER_DECLARE_VEC_OFFSET_SET(class_name, macro, name)\
 WASMER_DECLARE_VEC_OFFSET_UNSET(class_name)
 
-// TODO(jubianchi): Throw if size != len (zend_hash_num_elements(name##s_ht))
 #define WASMER_DECLARE_VEC_CONSTRUCT(class_name, name, macro) \
 PHP_METHOD (Wasm_Vec_##class_name, __construct) {\
     zend_array *name##s_ht;\
@@ -130,7 +130,7 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
         RETURN_NULL();\
     }\
     zend_resource *name##_res;\
-    name##_res = zend_register_resource((void *) wasm_##name##_vec->vec.data[offset], le_wasm_##name);\
+    name##_res = zend_register_resource(wasm_##name##_vec->vec.data[offset], le_wasm_##name);\
     \
     RETURN_RES(name##_res);\
 }

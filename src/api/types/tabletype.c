@@ -28,7 +28,7 @@ PHP_FUNCTION (wasm_tabletype_new) {
     wasm_tabletype_t *tabletype = wasm_tabletype_new(Z_RES_P(valtype_val)->ptr, Z_RES_P(limits_val)->ptr);
 
     zend_resource *tabletype_res;
-    tabletype_res = zend_register_resource((void *) tabletype, le_wasm_tabletype);
+    tabletype_res = zend_register_resource(tabletype, le_wasm_tabletype);
 
     RETURN_RES(tabletype_res);
 }
@@ -79,7 +79,7 @@ PHP_FUNCTION (wasm_tabletype_as_externtype) {
     wasm_externtype_t *externtype = wasm_tabletype_as_externtype(Z_RES_P(tabletype_val)->ptr);
 
     zend_resource *externtype_res;
-    externtype_res = zend_register_resource((void *) externtype, le_wasm_externtype);
+    externtype_res = zend_register_resource(externtype, le_wasm_externtype);
 
     RETURN_RES(externtype_res);
 }

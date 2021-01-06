@@ -13,7 +13,7 @@ PHP_FUNCTION (wasm_engine_new) {
     wasm_engine_t *engine = wasm_engine_new();
 
     zend_resource *engine_res;
-    engine_res = zend_register_resource((void *) engine, le_wasm_engine);
+    engine_res = zend_register_resource(engine, le_wasm_engine);
 
     RETURN_RES(engine_res);
 }
@@ -31,7 +31,7 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
     wasm_engine_t *engine = wasm_engine_new_with_config(Z_RES_P(config_val)->ptr);
 
     zend_resource *engine_res;
-    engine_res = zend_register_resource((void *) engine, le_wasm_engine);
+    engine_res = zend_register_resource(engine, le_wasm_engine);
 
     RETURN_RES(engine_res);
 }

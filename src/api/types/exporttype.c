@@ -30,7 +30,7 @@ PHP_FUNCTION (wasm_exporttype_new) {
     wasm_exporttype_t *exporttype = wasm_exporttype_new(name_vec, Z_RES_P(externtype_val)->ptr);
 
     zend_resource *exporttype_res;
-    exporttype_res = zend_register_resource((void *) exporttype, le_wasm_exporttype);
+    exporttype_res = zend_register_resource(exporttype, le_wasm_exporttype);
 
     RETURN_RES(exporttype_res);
 }

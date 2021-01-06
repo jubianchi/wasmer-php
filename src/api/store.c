@@ -19,7 +19,7 @@ PHP_FUNCTION (wasm_store_new) {
     wasm_store_t *store = wasm_store_new(Z_RES_P(engine_val)->ptr);
 
     zend_resource *store_res;
-    store_res = zend_register_resource((void *) store, le_wasm_store);
+    store_res = zend_register_resource(store, le_wasm_store);
 
     RETURN_RES(store_res);
 }

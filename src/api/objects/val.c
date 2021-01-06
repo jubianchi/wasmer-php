@@ -21,7 +21,7 @@ PHP_FUNCTION (wasm_val_copy) {
     wasm_val_copy(&val, Z_RES_P(val_val)->ptr);
 
     zend_resource *val_res;
-    val_res = zend_register_resource((void *) &val, le_wasm_val);
+    val_res = zend_register_resource(&val, le_wasm_val);
 
     RETURN_RES(val_res);
 }

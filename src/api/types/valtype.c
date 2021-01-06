@@ -20,7 +20,7 @@ PHP_FUNCTION (wasm_valtype_new) {
     wasm_valtype_t *valtype = wasm_valtype_new(valkind);
 
     zend_resource *valtype_res;
-    valtype_res = zend_register_resource((void *) valtype, le_wasm_valtype);
+    valtype_res = zend_register_resource(valtype, le_wasm_valtype);
 
     RETURN_RES(valtype_res);
 }

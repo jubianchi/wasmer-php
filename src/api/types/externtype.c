@@ -40,7 +40,7 @@ PHP_FUNCTION (wasm_externtype_as_functype) {
     wasm_functype_t *functype = wasm_externtype_as_functype(Z_RES_P(externtype_val)->ptr);
 
     zend_resource *functype_res;
-    functype_res = zend_register_resource((void *) functype, le_wasm_functype);
+    functype_res = zend_register_resource(functype, le_wasm_functype);
 
     RETURN_RES(functype_res);
 }
@@ -57,7 +57,7 @@ PHP_FUNCTION (wasm_externtype_as_globaltype) {
     wasm_globaltype_t *globaltype = wasm_externtype_as_globaltype(Z_RES_P(externtype_val)->ptr);
 
     zend_resource *globaltype_res;
-    globaltype_res = zend_register_resource((void *) globaltype, le_wasm_globaltype);
+    globaltype_res = zend_register_resource(globaltype, le_wasm_globaltype);
 
     RETURN_RES(globaltype_res);
 }
@@ -74,7 +74,7 @@ PHP_FUNCTION (wasm_externtype_as_memorytype) {
     wasm_memorytype_t *memorytype = wasm_externtype_as_memorytype(Z_RES_P(externtype_val)->ptr);
 
     zend_resource *memorytype_res;
-    memorytype_res = zend_register_resource((void *) memorytype, le_wasm_memorytype);
+    memorytype_res = zend_register_resource(memorytype, le_wasm_memorytype);
 
     RETURN_RES(memorytype_res);
 }
@@ -91,7 +91,7 @@ PHP_FUNCTION (wasm_externtype_as_tabletype) {
     wasm_tabletype_t *tabletype = wasm_externtype_as_tabletype(Z_RES_P(externtype_val)->ptr);
 
     zend_resource *tabletype_res;
-    tabletype_res = zend_register_resource((void *) tabletype, le_wasm_tabletype);
+    tabletype_res = zend_register_resource(tabletype, le_wasm_tabletype);
 
     RETURN_RES(tabletype_res);
 }

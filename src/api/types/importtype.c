@@ -37,7 +37,7 @@ PHP_FUNCTION (wasm_importtype_new) {
     wasm_importtype_t *importtype = wasm_importtype_new(module_vec, name_vec, Z_RES_P(externtype_val)->ptr);
 
     zend_resource *importtype_res;
-    importtype_res = zend_register_resource((void *) importtype, le_wasm_importtype);
+    importtype_res = zend_register_resource(importtype, le_wasm_importtype);
 
     RETURN_RES(importtype_res);
 }

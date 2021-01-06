@@ -29,7 +29,7 @@ PHP_FUNCTION (wasm_globaltype_new) {
     wasm_globaltype_t *globaltype = wasm_globaltype_new(Z_RES_P(valtype_val)->ptr, mutability);
 
     zend_resource *globaltype_res;
-    globaltype_res = zend_register_resource((void *) globaltype, le_wasm_globaltype);
+    globaltype_res = zend_register_resource(globaltype, le_wasm_globaltype);
 
     RETURN_RES(globaltype_res);
 }

@@ -62,7 +62,7 @@ PHP_FUNCTION (wasm_extern_copy) {
     wasm_extern_t *extern_ = wasm_extern_copy(Z_RES_P(extern_val)->ptr);
 
     zend_resource *extern_res;
-    extern_res = zend_register_resource((void *) extern_, le_wasm_extern);
+    extern_res = zend_register_resource(extern_, le_wasm_extern);
 
     RETURN_RES(extern_res);
 }

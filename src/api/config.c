@@ -10,7 +10,7 @@ PHP_FUNCTION (wasm_config_new) {
     wasm_config_t *config = wasm_config_new();
 
     zend_resource *config_res;
-    config_res = zend_register_resource((void *) config, le_wasm_config);
+    config_res = zend_register_resource(config, le_wasm_config);
 
     RETURN_RES(config_res);
 }

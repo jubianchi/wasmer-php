@@ -22,7 +22,7 @@ PHP_FUNCTION (wasm_limits_new) {
     limits->max = max;
 
     zend_resource *limits_res;
-    limits_res = zend_register_resource((void *) limits, le_wasm_limits);
+    limits_res = zend_register_resource(limits, le_wasm_limits);
 
     RETURN_RES(limits_res);
 }

@@ -25,7 +25,7 @@ PHP_FUNCTION (wasm_memorytype_new) {
     wasm_memorytype_t *memorytype = wasm_memorytype_new(Z_RES_P(limits_val)->ptr);
 
     zend_resource *memorytype_res;
-    memorytype_res = zend_register_resource((void *) memorytype, le_wasm_memorytype);
+    memorytype_res = zend_register_resource(memorytype, le_wasm_memorytype);
 
     RETURN_RES(memorytype_res);
 }
@@ -59,7 +59,7 @@ PHP_FUNCTION (wasm_memorytype_as_externtype) {
     wasm_externtype_t *externtype = wasm_memorytype_as_externtype(Z_RES_P(memorytype_val)->ptr);
 
     zend_resource *externtype_res;
-    externtype_res = zend_register_resource((void *) externtype, le_wasm_externtype);
+    externtype_res = zend_register_resource(externtype, le_wasm_externtype);
 
     RETURN_RES(externtype_res);
 }

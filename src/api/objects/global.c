@@ -29,6 +29,7 @@ PHP_FUNCTION (wasm_global_get) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_global_set) {
     ZEND_PARSE_PARAMETERS_NONE();
 

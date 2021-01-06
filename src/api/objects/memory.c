@@ -6,6 +6,7 @@
 
 WASMER_IMPORT_RESOURCE(memory)
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_memory_new) {
     ZEND_PARSE_PARAMETERS_NONE();
 

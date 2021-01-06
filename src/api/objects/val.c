@@ -8,6 +8,7 @@ WASMER_IMPORT_RESOURCE(val)
 
 WASMER_DELETE_WITHOUT_DTOR(val)
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_val_copy) {
     zval *val_val;
 

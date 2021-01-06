@@ -6,6 +6,7 @@
 
 WASMER_IMPORT_RESOURCE(trap)
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_trap_new) {
     ZEND_PARSE_PARAMETERS_NONE();
 

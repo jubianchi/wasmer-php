@@ -18,6 +18,7 @@ PHP_FUNCTION (wasm_engine_new) {
     RETURN_RES(engine_res);
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_engine_new_with_config) {
     zval *config_val;
     zend_resource *config_res;

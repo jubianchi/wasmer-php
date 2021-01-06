@@ -28,6 +28,7 @@ PHP_FUNCTION (wasm_externtype_kind) {
     RETURN_LONG(kind);
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_functype) {
     zval *externtype_val;
 
@@ -45,6 +46,7 @@ PHP_FUNCTION (wasm_externtype_as_functype) {
     RETURN_RES(functype_res);
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_globaltype) {
     zval *externtype_val;
 
@@ -62,6 +64,7 @@ PHP_FUNCTION (wasm_externtype_as_globaltype) {
     RETURN_RES(globaltype_res);
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_memorytype) {
     zval *externtype_val;
 
@@ -79,6 +82,7 @@ PHP_FUNCTION (wasm_externtype_as_memorytype) {
     RETURN_RES(memorytype_res);
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_tabletype) {
     zval *externtype_val;
 

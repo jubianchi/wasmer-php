@@ -6,6 +6,7 @@
 
 WASMER_IMPORT_RESOURCE(module)
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_module_new) {
     ZEND_PARSE_PARAMETERS_NONE();
 
@@ -15,6 +16,7 @@ PHP_FUNCTION (wasm_module_new) {
 
 WASMER_DELETE_WITHOUT_DTOR(module)
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_module_validate) {
     ZEND_PARSE_PARAMETERS_NONE();
 
@@ -43,6 +45,7 @@ PHP_FUNCTION (wasm_module_serialize) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
+// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_module_deserialize) {
     ZEND_PARSE_PARAMETERS_NONE();
 

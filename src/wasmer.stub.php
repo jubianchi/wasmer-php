@@ -403,12 +403,39 @@ namespace {
 
     // Modules
 
-    function wasm_module_new(): void {}
-    function wasm_module_delete(): void {}
-    function wasm_module_validate(): void {}
-    function wasm_module_imports(): void {}
-    function wasm_module_exports(): void {}
-    function wasm_module_serialize(): void {}
+    /**
+     * @param resource $store
+     *
+     * @return resource
+     */
+    function wasm_module_new($store, string $wasm) {}
+    /** @param resource $module */
+    function wasm_module_delete($module): bool {}
+    /**
+     * @param resource $store
+     * @param resource $module
+     */
+    function wasm_module_validate($store, $module): bool {}
+    /** @param resource $module */
+    function wasm_module_imports($module): Wasm\Vec\ImportType {}
+    /** @param resource $module */
+    function wasm_module_exports($module): Wasm\Vec\ExportType {}
+    /** @param resource $module */
+    function wasm_module_serialize($module): string {}
+    /**
+     * @param resource $store
+     *
+     * @return resource
+     */
+    function wasm_module_deserialize($store, string $wasm) {}
+    /**
+     * @param resource $module
+     */
+    function wasm_module_name($module): string {}
+    /**
+     * @param resource $module
+     */
+    function wasm_module_set_name($module, string $name): bool {}
 
 
     // Function Instances

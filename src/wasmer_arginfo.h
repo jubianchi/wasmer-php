@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6642579323100d7460f6b2cf6f78c8716b5400a3 */
+ * Stub hash: 7a6837a439482f0724dc17adbb74f4cf92c0b691 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -176,18 +176,40 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_val_copy, 0, 0, 1)
 	ZEND_ARG_INFO(0, val)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_new, 0, 0, IS_VOID, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_module_new, 0, 0, 2)
+	ZEND_ARG_INFO(0, store)
+	ZEND_ARG_TYPE_INFO(0, wasm, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_wasm_module_delete arginfo_wasm_module_new
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_delete, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
 
-#define arginfo_wasm_module_validate arginfo_wasm_module_new
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_validate, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, store)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
 
-#define arginfo_wasm_module_imports arginfo_wasm_module_new
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_wasm_module_imports, 0, 1, Wasm\\Vec\\ImportType, 0)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
 
-#define arginfo_wasm_module_exports arginfo_wasm_module_new
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_wasm_module_exports, 0, 1, Wasm\\Vec\\ExportType, 0)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
 
-#define arginfo_wasm_module_serialize arginfo_wasm_module_new
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_serialize, 0, 1, IS_STRING, 0)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_module_deserialize arginfo_wasm_module_new
+
+#define arginfo_wasm_module_name arginfo_wasm_module_serialize
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_set_name, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, module)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wat2wasm, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, wat, IS_STRING, 0)
@@ -360,6 +382,9 @@ ZEND_FUNCTION(wasm_module_validate);
 ZEND_FUNCTION(wasm_module_imports);
 ZEND_FUNCTION(wasm_module_exports);
 ZEND_FUNCTION(wasm_module_serialize);
+ZEND_FUNCTION(wasm_module_deserialize);
+ZEND_FUNCTION(wasm_module_name);
+ZEND_FUNCTION(wasm_module_set_name);
 ZEND_FUNCTION(wat2wasm);
 ZEND_METHOD(Wasm_Vec_ValType, __construct);
 ZEND_METHOD(Wasm_Vec_ValType, count);
@@ -464,6 +489,9 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_module_imports, arginfo_wasm_module_imports)
 	ZEND_FE(wasm_module_exports, arginfo_wasm_module_exports)
 	ZEND_FE(wasm_module_serialize, arginfo_wasm_module_serialize)
+	ZEND_FE(wasm_module_deserialize, arginfo_wasm_module_deserialize)
+	ZEND_FE(wasm_module_name, arginfo_wasm_module_name)
+	ZEND_FE(wasm_module_set_name, arginfo_wasm_module_set_name)
 	ZEND_FE(wat2wasm, arginfo_wat2wasm)
 	ZEND_FE_END
 };

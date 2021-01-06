@@ -1,6 +1,7 @@
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
-#include "wasm.h"
+#include "wasmer_wasm.h"
 
 #include "macros.h"
 
@@ -18,10 +19,8 @@ PHP_FUNCTION (wasm_engine_new) {
     RETURN_RES(engine_res);
 }
 
-// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_engine_new_with_config) {
     zval *config_val;
-    zend_resource *config_res;
 
     ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
             Z_PARAM_RESOURCE(config_val)
@@ -30,6 +29,8 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
     WASMER_FETCH_RESOURCE(config)
 
     wasm_engine_t *engine = wasm_engine_new_with_config(Z_RES_P(config_val)->ptr);
+
+    WASMER_HANDLE_ERROR
 
     zend_resource *engine_res;
     engine_res = zend_register_resource(engine, le_wasm_engine);

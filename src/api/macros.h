@@ -169,3 +169,23 @@ WASMER_DELETE_WITHOUT_DTOR(name)\
 WASMER_DECLARE_OWN(name)\
 WASMER_DECLARE_VEC(class_name, macro, name)\
 WASMER_COPY(name)
+
+#define WASMER_HANDLE_ERROR_START \
+{\
+    int error_length = wasmer_last_error_length();\
+    \
+    if (error_length > 0) {\
+        char buffer[error_length];\
+        wasmer_last_error_message(buffer, error_length);\
+
+
+#define WASMER_HANDLE_ERROR_END \
+        zend_throw_exception_ex(zend_ce_exception, 0, "%s", buffer);\
+        \
+        return;\
+    }\
+}
+
+#define WASMER_HANDLE_ERROR \
+WASMER_HANDLE_ERROR_START \
+WASMER_HANDLE_ERROR_END

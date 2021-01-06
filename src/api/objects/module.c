@@ -33,18 +33,9 @@ PHP_FUNCTION (wasm_module_new) {
 
     wasm_module_t *module = wasm_module_new(store, wasm_vec);
 
-    int error_length = wasmer_last_error_length();
-
-    if (error_length > 0) {
-        char buffer[error_length];
-        wasmer_last_error_message(buffer, error_length);
-
-        efree(wasm_vec);
-
-        zend_throw_exception_ex(zend_ce_exception, 0, "%s", buffer);
-
-        return;
-    }
+    WASMER_HANDLE_ERROR_START
+            efree(wasm_vec);
+    WASMER_HANDLE_ERROR_END
 
     zend_resource *module_res;
     module_res = zend_register_resource(module, le_wasm_module);
@@ -74,18 +65,9 @@ PHP_FUNCTION (wasm_module_validate) {
 
     bool valid = wasm_module_validate(store, wasm_vec);
 
-    int error_length = wasmer_last_error_length();
-
-    if (error_length > 0) {
-        char buffer[error_length];
-        wasmer_last_error_message(buffer, error_length);
-
-        efree(wasm_vec);
-
-        zend_throw_exception_ex(zend_ce_exception, 0, "%s", buffer);
-
-        return;
-    }
+    WASMER_HANDLE_ERROR_START
+            efree(wasm_vec);
+    WASMER_HANDLE_ERROR_END
 
     efree(wasm_vec);
 
@@ -182,18 +164,9 @@ PHP_FUNCTION (wasm_module_deserialize) {
 
     wasm_module_t *module = wasm_module_deserialize(store, wasm_vec);
 
-    int error_length = wasmer_last_error_length();
-
-    if (error_length > 0) {
-        char buffer[error_length];
-        wasmer_last_error_message(buffer, error_length);
-
-        efree(wasm_vec);
-
-        zend_throw_exception_ex(zend_ce_exception, 0, "%s", buffer);
-
-        return;
-    }
+    WASMER_HANDLE_ERROR_START
+            efree(wasm_vec);
+    WASMER_HANDLE_ERROR_END
 
     zend_resource *module_res;
     module_res = zend_register_resource(module, le_wasm_module);

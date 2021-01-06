@@ -51,6 +51,18 @@ namespace Wasm\Vec {
         public function offsetUnset(mixed $offset): void {}
     }
 
+    final class Extern implements \Countable, \ArrayAccess {
+            public function __construct(array|int|null $sizeOrExterns = null) {}
+            public function count(): int {}
+            public function offsetExists(mixed $offset): bool {}
+            /** @return resource */
+            public function offsetGet(mixed $offset): mixed {}
+            /** @param resource $value */
+            public function offsetSet(mixed $offset, mixed $value): void {}
+            /** @throw \Exception */
+            public function offsetUnset(mixed $offset): void {}
+        }
+
     final class ExternType implements \Countable, \ArrayAccess {
         public function __construct(array|int|null $sizeOrExterntypes = null) {}
         public function count(): int {}
@@ -465,7 +477,20 @@ namespace {
 
     // Module Instances
 
-    // TODO(jubianchi): Add instance
+    /**
+     * @param resource $store
+     * @param resource $module
+     *
+     * @return resource
+     */
+    function wasm_instance_new($store, $module) {}
+
+    /**
+     * @param resource $instance
+     *
+     * @return resource
+     */
+    function wasm_instance_exports($instance): Wasm\Vec\Extern {}
 
     // Wasmer API
 

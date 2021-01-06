@@ -8,10 +8,10 @@
 
 WASMER_IMPORT_RESOURCE(store)
 
-WASMER_DECLARE_OWN(module)
-
 extern zend_class_entry *wasm_vec_importtype_ce;
 extern zend_class_entry *wasm_vec_exporttype_ce;
+
+WASMER_DECLARE_OWN(module)
 
 PHP_FUNCTION (wasm_module_new) {
     zval *store_val;

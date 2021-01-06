@@ -41,6 +41,7 @@ Z_WASMER_DECLARE_CE(valtype)
 Z_WASMER_DECLARE_CE(globaltype)
 Z_WASMER_DECLARE_CE(tabletype)
 Z_WASMER_DECLARE_CE(memorytype)
+Z_WASMER_DECLARE_CE(extern)
 Z_WASMER_DECLARE_CE(externtype)
 Z_WASMER_DECLARE_CE(importtype)
 Z_WASMER_DECLARE_CE(exporttype)
@@ -104,13 +105,14 @@ PHP_MINIT_FUNCTION (wasmer) {
 
     zend_class_entry ce;
 
-    Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
-    Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
-    Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
-    Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
-    Z_WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
-    Z_WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
     Z_WASMER_DECLARE_VEC_CLASS(ExportType, exporttype)
+    Z_WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
+    Z_WASMER_DECLARE_VEC_CLASS(Extern, extern)
+    Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
+    Z_WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
+    Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
+    Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
+    Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
 
     return SUCCESS;
 }

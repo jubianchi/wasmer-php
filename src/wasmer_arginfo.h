@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7a6837a439482f0724dc17adbb74f4cf92c0b691 */
+ * Stub hash: 0d1d42bdb670558de2487f14edd60a59a84cc0ad */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -211,6 +211,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_set_name, 0, 2, _IS_
 	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_instance_new, 0, 0, 2)
+	ZEND_ARG_INFO(0, store)
+	ZEND_ARG_INFO(0, module)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_wasm_instance_exports, 0, 1, Wasm\\Vec\\Extern, 0)
+	ZEND_ARG_INFO(0, instance)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wat2wasm, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, wat, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -280,6 +289,20 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_Wasm_Vec_MemoryType_offsetSet arginfo_class_Wasm_Vec_ValType_offsetSet
 
 #define arginfo_class_Wasm_Vec_MemoryType_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_Extern___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_MASK(0, sizeOrExterns, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_Wasm_Vec_Extern_count arginfo_class_Wasm_Vec_ValType_count
+
+#define arginfo_class_Wasm_Vec_Extern_offsetExists arginfo_class_Wasm_Vec_ValType_offsetExists
+
+#define arginfo_class_Wasm_Vec_Extern_offsetGet arginfo_class_Wasm_Vec_ValType_offsetGet
+
+#define arginfo_class_Wasm_Vec_Extern_offsetSet arginfo_class_Wasm_Vec_ValType_offsetSet
+
+#define arginfo_class_Wasm_Vec_Extern_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_ExternType___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_MASK(0, sizeOrExterntypes, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
@@ -385,6 +408,8 @@ ZEND_FUNCTION(wasm_module_serialize);
 ZEND_FUNCTION(wasm_module_deserialize);
 ZEND_FUNCTION(wasm_module_name);
 ZEND_FUNCTION(wasm_module_set_name);
+ZEND_FUNCTION(wasm_instance_new);
+ZEND_FUNCTION(wasm_instance_exports);
 ZEND_FUNCTION(wat2wasm);
 ZEND_METHOD(Wasm_Vec_ValType, __construct);
 ZEND_METHOD(Wasm_Vec_ValType, count);
@@ -410,6 +435,12 @@ ZEND_METHOD(Wasm_Vec_MemoryType, offsetExists);
 ZEND_METHOD(Wasm_Vec_MemoryType, offsetGet);
 ZEND_METHOD(Wasm_Vec_MemoryType, offsetSet);
 ZEND_METHOD(Wasm_Vec_MemoryType, offsetUnset);
+ZEND_METHOD(Wasm_Vec_Extern, __construct);
+ZEND_METHOD(Wasm_Vec_Extern, count);
+ZEND_METHOD(Wasm_Vec_Extern, offsetExists);
+ZEND_METHOD(Wasm_Vec_Extern, offsetGet);
+ZEND_METHOD(Wasm_Vec_Extern, offsetSet);
+ZEND_METHOD(Wasm_Vec_Extern, offsetUnset);
 ZEND_METHOD(Wasm_Vec_ExternType, __construct);
 ZEND_METHOD(Wasm_Vec_ExternType, count);
 ZEND_METHOD(Wasm_Vec_ExternType, offsetExists);
@@ -492,6 +523,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_module_deserialize, arginfo_wasm_module_deserialize)
 	ZEND_FE(wasm_module_name, arginfo_wasm_module_name)
 	ZEND_FE(wasm_module_set_name, arginfo_wasm_module_set_name)
+	ZEND_FE(wasm_instance_new, arginfo_wasm_instance_new)
+	ZEND_FE(wasm_instance_exports, arginfo_wasm_instance_exports)
 	ZEND_FE(wat2wasm, arginfo_wat2wasm)
 	ZEND_FE_END
 };
@@ -537,6 +570,17 @@ static const zend_function_entry class_Wasm_Vec_MemoryType_methods[] = {
 	ZEND_ME(Wasm_Vec_MemoryType, offsetGet, arginfo_class_Wasm_Vec_MemoryType_offsetGet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_MemoryType, offsetSet, arginfo_class_Wasm_Vec_MemoryType_offsetSet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_MemoryType, offsetUnset, arginfo_class_Wasm_Vec_MemoryType_offsetUnset, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Wasm_Vec_Extern_methods[] = {
+	ZEND_ME(Wasm_Vec_Extern, __construct, arginfo_class_Wasm_Vec_Extern___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Extern, count, arginfo_class_Wasm_Vec_Extern_count, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Extern, offsetExists, arginfo_class_Wasm_Vec_Extern_offsetExists, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Extern, offsetGet, arginfo_class_Wasm_Vec_Extern_offsetGet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Extern, offsetSet, arginfo_class_Wasm_Vec_Extern_offsetSet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Extern, offsetUnset, arginfo_class_Wasm_Vec_Extern_offsetUnset, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

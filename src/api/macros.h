@@ -20,10 +20,10 @@ PHP_FUNCTION (wasm_##name##_copy) {\
     \
     WASMER_FETCH_RESOURCE(name)\
     \
-    wasm_##name##_t *name = wasm_##name##_copy(Z_RES_P(name##_val)->ptr);\
+    wasm_##name##_t *wasm_##name = wasm_##name##_copy(Z_RES_P(name##_val)->ptr);\
     \
     zend_resource *name##_res;\
-    name##_res = zend_register_resource(name, le_wasm_##name);\
+    name##_res = zend_register_resource(wasm_##name, le_wasm_##name);\
     \
     RETURN_RES(name##_res);\
 }

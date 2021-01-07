@@ -1,12 +1,11 @@
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 
-#include "wasm.h"
+#include "wasmer_wasm.h"
 
 #include "../macros.h"
 #include "../../wasmer.h"
 
-WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(functype)
 WASMER_IMPORT_RESOURCE(globaltype)
 WASMER_IMPORT_RESOURCE(memorytype)
@@ -28,7 +27,6 @@ PHP_FUNCTION (wasm_externtype_kind) {
     RETURN_LONG(kind);
 }
 
-// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_functype) {
     zval *externtype_val;
 
@@ -40,13 +38,14 @@ PHP_FUNCTION (wasm_externtype_as_functype) {
 
     wasm_functype_t *functype = wasm_externtype_as_functype(Z_RES_P(externtype_val)->ptr);
 
+    WASMER_HANDLE_ERROR
+
     zend_resource *functype_res;
     functype_res = zend_register_resource(functype, le_wasm_functype);
 
     RETURN_RES(functype_res);
 }
 
-// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_globaltype) {
     zval *externtype_val;
 
@@ -58,13 +57,14 @@ PHP_FUNCTION (wasm_externtype_as_globaltype) {
 
     wasm_globaltype_t *globaltype = wasm_externtype_as_globaltype(Z_RES_P(externtype_val)->ptr);
 
+    WASMER_HANDLE_ERROR
+
     zend_resource *globaltype_res;
     globaltype_res = zend_register_resource(globaltype, le_wasm_globaltype);
 
     RETURN_RES(globaltype_res);
 }
 
-// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_memorytype) {
     zval *externtype_val;
 
@@ -76,13 +76,14 @@ PHP_FUNCTION (wasm_externtype_as_memorytype) {
 
     wasm_memorytype_t *memorytype = wasm_externtype_as_memorytype(Z_RES_P(externtype_val)->ptr);
 
+    WASMER_HANDLE_ERROR
+
     zend_resource *memorytype_res;
     memorytype_res = zend_register_resource(memorytype, le_wasm_memorytype);
 
     RETURN_RES(memorytype_res);
 }
 
-// TODO(jubianchi): Handle wasmer errors
 PHP_FUNCTION (wasm_externtype_as_tabletype) {
     zval *externtype_val;
 
@@ -93,6 +94,8 @@ PHP_FUNCTION (wasm_externtype_as_tabletype) {
     WASMER_FETCH_RESOURCE(externtype)
 
     wasm_tabletype_t *tabletype = wasm_externtype_as_tabletype(Z_RES_P(externtype_val)->ptr);
+
+    WASMER_HANDLE_ERROR
 
     zend_resource *tabletype_res;
     tabletype_res = zend_register_resource(tabletype, le_wasm_tabletype);

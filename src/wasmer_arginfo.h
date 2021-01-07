@@ -232,6 +232,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_module_set_name, 0, 2, _IS_
 	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_func_new, 0, 0, 3)
+	ZEND_ARG_INFO(0, store)
+	ZEND_ARG_INFO(0, functype)
+	ZEND_ARG_TYPE_INFO(0, func, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_instance_new, 0, 0, 2)
 	ZEND_ARG_INFO(0, store)
 	ZEND_ARG_INFO(0, module)
@@ -449,6 +455,7 @@ ZEND_FUNCTION(wasm_module_serialize);
 ZEND_FUNCTION(wasm_module_deserialize);
 ZEND_FUNCTION(wasm_module_name);
 ZEND_FUNCTION(wasm_module_set_name);
+ZEND_FUNCTION(wasm_func_new);
 ZEND_FUNCTION(wasm_instance_new);
 ZEND_FUNCTION(wasm_instance_exports);
 ZEND_FUNCTION(wat2wasm);
@@ -576,6 +583,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_module_deserialize, arginfo_wasm_module_deserialize)
 	ZEND_FE(wasm_module_name, arginfo_wasm_module_name)
 	ZEND_FE(wasm_module_set_name, arginfo_wasm_module_set_name)
+	ZEND_FE(wasm_func_new, arginfo_wasm_func_new)
 	ZEND_FE(wasm_instance_new, arginfo_wasm_instance_new)
 	ZEND_FE(wasm_instance_exports, arginfo_wasm_instance_exports)
 	ZEND_FE(wat2wasm, arginfo_wat2wasm)

@@ -230,7 +230,8 @@ namespace {
      */
     function wasm_globaltype_as_externtype($globaltype) {}
 
-    // TODO(jubianchi): Add globaltype_vec
+
+    // Limits
 
     /** @return resource */
     function wasm_limits_new(int $min, int $max) {}
@@ -276,8 +277,6 @@ namespace {
      */
     function wasm_tabletype_as_externtype($tabletype) {}
 
-    // TODO(jubianchi): Add tabletype_vec
-
 
     // Memory Types
 
@@ -307,8 +306,6 @@ namespace {
      * @return resource
      */
     function wasm_memorytype_as_externtype($memorytype) {}
-
-    // TODO(jubianchi): Add memorytype_vec
 
 
     // Extern Types
@@ -344,8 +341,6 @@ namespace {
      */
     function wasm_externtype_as_memorytype($externtype) {}
 
-    // TODO(jubianchi): Add externtype_vec
-
 
     // Import Types
 
@@ -374,8 +369,6 @@ namespace {
      */
     function wasm_importtype_copy($importype) {}
 
-    // TODO(jubianchi): Add importtype_vec
-
 
     // Export Types
 
@@ -401,8 +394,6 @@ namespace {
      * @return resource
      */
     function wasm_exporttype_copy($exportype) {}
-
-    // TODO(jubianchi): Add exporttype_vec
 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -481,6 +472,13 @@ namespace {
 
     // Function Instances
 
+    /**
+     * @param resource $store
+     * @param resource $functype
+     *
+     * @return resource
+     */
+    function wasm_func_new($store, $functype, callable $func) {}
     // TODO(jubianchi): Add func
 
 

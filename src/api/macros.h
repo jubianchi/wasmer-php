@@ -98,7 +98,6 @@ PHP_METHOD (Wasm_Vec_##class_name, count) {\
     RETURN_LONG(vec.size);\
 }
 
-// TODO(jubianchi): Throw if offset >= size
 #define WASMER_DECLARE_VEC_OFFSET_EXISTS(class_name, macro, name)\
 PHP_METHOD (Wasm_Vec_##class_name, offsetExists) {\
     zend_long offset;\
@@ -109,10 +108,13 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetExists) {\
     \
     wasm_##name##_vec_c *wasm_##name##_vec = Z_WASM_##macro##_VEC_P(ZEND_THIS);\
     \
+    if(offset >= wasm_##name##_vec->vec.size) {\
+        RETURN_FALSE;\
+    }\
+    \
     RETURN_BOOL(offset < wasm_##name##_vec->vec.size);\
 }
 
-// TODO(jubianchi): Throw if offset >= size
 #define WASMER_DECLARE_VEC_OFFSET_GET(class_name, macro, name)\
 PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
     zend_long offset;\
@@ -135,7 +137,6 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
     RETURN_RES(name##_res);\
 }
 
-// TODO(jubianchi): Throw if offset >= size
 #define WASMER_DECLARE_VEC_OFFSET_SET(class_name, macro, name)\
 PHP_METHOD (Wasm_Vec_##class_name, offsetSet) {\
     zend_long offset;\

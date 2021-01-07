@@ -30,3 +30,6 @@ Z_WASMER_DECLARE_CE_STRUCT(importtype)
 
 Z_WASMER_DECLARE_CE_STRUCT(exporttype)
 #define Z_WASM_EXPORTTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(exporttype, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(functype)
+#define Z_WASM_FUNCTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(functype, zv)

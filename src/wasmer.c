@@ -45,6 +45,7 @@ Z_WASMER_DECLARE_CE(extern)
 Z_WASMER_DECLARE_CE(externtype)
 Z_WASMER_DECLARE_CE(importtype)
 Z_WASMER_DECLARE_CE(exporttype)
+Z_WASMER_DECLARE_CE(functype)
 
 /*
 static zend_class_entry* fetch_internal_class(const char* class_name)
@@ -113,6 +114,7 @@ PHP_MINIT_FUNCTION (wasmer) {
     Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
     Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
     Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
+    Z_WASMER_DECLARE_VEC_CLASS(FuncType, functype)
 
     return SUCCESS;
 }

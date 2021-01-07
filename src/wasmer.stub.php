@@ -52,16 +52,16 @@ namespace Wasm\Vec {
     }
 
     final class Extern implements \Countable, \ArrayAccess {
-            public function __construct(array|int|null $sizeOrExterns = null) {}
-            public function count(): int {}
-            public function offsetExists(mixed $offset): bool {}
-            /** @return resource */
-            public function offsetGet(mixed $offset): mixed {}
-            /** @param resource $value */
-            public function offsetSet(mixed $offset, mixed $value): void {}
-            /** @throw \Exception */
-            public function offsetUnset(mixed $offset): void {}
-        }
+        public function __construct(array|int|null $sizeOrExterns = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
 
     final class ExternType implements \Countable, \ArrayAccess {
         public function __construct(array|int|null $sizeOrExterntypes = null) {}
@@ -89,6 +89,18 @@ namespace Wasm\Vec {
 
     final class ExportType implements \Countable, \ArrayAccess {
         public function __construct(array|int|null $sizeOrExporttypes = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
+
+    final class FuncType implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrFunctypes = null) {}
         public function count(): int {}
         public function offsetExists(mixed $offset): bool {}
         /** @return resource */
@@ -165,9 +177,26 @@ namespace {
 
     // Function Types
 
-    // TODO(jubianchi): Add functype
-    // TODO(jubianchi): Add functype_vec
-    // TODO(jubianchi): Add functype_as_externtype
+    /** @return resource */
+    function wasm_functype_new(Wasm\Vec\ValType $params, Wasm\Vec\ValType $results) {}
+    /** @param resource $functype */
+    function wasm_functype_delete($functype): bool {}
+    /** @param resource $functype */
+    function wasm_functype_params($functype): Wasm\Vec\ValType {}
+    /** @param resource $functype */
+    function wasm_functype_results($functype): Wasm\Vec\ValType {}
+    /**
+     * @param resource $functype
+     *
+     * @return resource
+     */
+    function wasm_functype_copy($functype) {}
+    /**
+     * @param resource $functype
+     *
+     * @return resource
+     */
+    function wasm_functype_as_externtype($functype) {}
 
 
     // Global Types

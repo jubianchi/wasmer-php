@@ -108,13 +108,14 @@ PHP_MINIT_FUNCTION (wasmer) {
 
     Z_WASMER_DECLARE_VEC_CLASS(ExportType, exporttype)
     Z_WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
-    Z_WASMER_DECLARE_VEC_CLASS(Extern, extern)
     Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
     Z_WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
     Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
     Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
     Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
     Z_WASMER_DECLARE_VEC_CLASS(FuncType, functype)
+
+    Z_WASMER_DECLARE_VEC_CLASS(Extern, extern)
 
     return SUCCESS;
 }

@@ -19,10 +19,12 @@ WASMER_DECLARE_OWN(instance)
 PHP_FUNCTION (wasm_instance_new) {
     zval *store_val;
     zval *module_val;
+    zval *externs_val;
 
-    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 2, 2)
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 3, 3)
             Z_PARAM_RESOURCE(store_val)
             Z_PARAM_RESOURCE(module_val)
+            Z_PARAM_OBJECT(externs_val)
     ZEND_PARSE_PARAMETERS_END();
 
     WASMER_FETCH_RESOURCE(store)
@@ -31,12 +33,9 @@ PHP_FUNCTION (wasm_instance_new) {
     wasm_store_t *store = Z_RES_P(store_val)->ptr;
     wasm_module_t *module = Z_RES_P(module_val)->ptr;
 
-    wasm_extern_vec_t *externs = emalloc(sizeof(wasm_extern_vec_t));
-    wasm_extern_vec_new_empty(externs);
+    wasm_extern_vec_c *externs = Z_WASM_EXTERN_VEC_P(externs_val);
 
-    wasm_instance_t *instance = wasm_instance_new(store, module, externs, NULL);
-
-    efree(externs);
+    wasm_instance_t *instance = wasm_instance_new(store, module, &externs->vec, NULL);
 
     WASMER_HANDLE_ERROR
 

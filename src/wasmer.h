@@ -19,9 +19,6 @@ Z_WASMER_DECLARE_CE_STRUCT(tabletype)
 Z_WASMER_DECLARE_CE_STRUCT(memorytype)
 #define Z_WASM_MEMORYTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(memorytype, zv)
 
-Z_WASMER_DECLARE_CE_STRUCT(extern)
-#define Z_WASM_EXTERN_VEC_P(zv) Z_WASMER_DECLARE_CE_P(extern, zv)
-
 Z_WASMER_DECLARE_CE_STRUCT(externtype)
 #define Z_WASM_EXTERNTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(externtype, zv)
 
@@ -33,3 +30,10 @@ Z_WASMER_DECLARE_CE_STRUCT(exporttype)
 
 Z_WASMER_DECLARE_CE_STRUCT(functype)
 #define Z_WASM_FUNCTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(functype, zv)
+
+typedef struct wasm_extern_vec_c {
+    wasm_extern_vec_t vec;
+    zend_object std;
+} wasm_extern_vec_c;
+#define Z_WASM_EXTERN_VEC_P(zv) ((wasm_extern_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_extern_vec_c, std)))
+

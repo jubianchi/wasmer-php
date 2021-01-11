@@ -479,6 +479,12 @@ namespace {
      * @return resource
      */
     function wasm_func_new($store, $functype, callable $func) {}
+    /**
+     * @param resource $func
+     *
+     * @return resource
+     */
+    function wasm_func_as_extern($func) {}
     // TODO(jubianchi): Add func
 
 
@@ -510,7 +516,7 @@ namespace {
      *
      * @return resource
      */
-    function wasm_instance_new($store, $module) {}
+    function wasm_instance_new($store, $module, Wasm\Vec\Extern $externs) {}
 
     /**
      * @param resource $instance

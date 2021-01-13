@@ -110,6 +110,18 @@ namespace Wasm\Vec {
         /** @throw \Exception */
         public function offsetUnset(mixed $offset): void {}
     }
+
+    final class Val implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrVals = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
 }
 
 namespace {
@@ -409,6 +421,14 @@ namespace {
      * @return resource
      */
     function wasm_val_copy($val) {}
+    /** @return resource */
+    function wasm_val_i32(int $val) {}
+    /** @return resource */
+    function wasm_val_i64(int $val) {}
+    /** @return resource */
+    function wasm_val_f32(float $val) {}
+    /** @return resource */
+    function wasm_val_f64(float $val) {}
 
     // TODO(jubianchi): Add val_vec
 
@@ -479,6 +499,10 @@ namespace {
      * @return resource
      */
     function wasm_func_new($store, $functype, callable $func) {}
+    /** @param resource $func */
+    function wasm_func_delete($func): bool {}
+    /** @param resource $func */
+    function wasm_func_call($func, Wasm\Vec\Extern $args, Wasm\Vec\Extern $results): bool {}
     /**
      * @param resource $func
      *
@@ -504,7 +528,12 @@ namespace {
 
 
     // Externals
-
+    /**
+     * @param resource $extern
+     *
+     * @return resource
+     */
+    function wasm_extern_as_func($extern) {}
     // TODO(jubianchi): Add extern
 
 
@@ -517,7 +546,8 @@ namespace {
      * @return resource
      */
     function wasm_instance_new($store, $module, Wasm\Vec\Extern $externs) {}
-
+    /** @param resource $instance */
+    function wasm_instance_delete($instance): bool {}
     /**
      * @param resource $instance
      *

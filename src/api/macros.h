@@ -128,9 +128,11 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
     if(offset >= wasm_##name##_vec->vec.size) {\
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\" #class_name "::offsetGet($offset) index out of bounds");\
     }\
+    \
     if(wasm_##name##_vec->vec.data[offset] == NULL) {\
         RETURN_NULL();\
     }\
+    \
     zend_resource *name##_res;\
     name##_res = zend_register_resource(wasm_##name##_vec->vec.data[offset], le_wasm_##name);\
     \

@@ -33,7 +33,7 @@ $extern = wasm_func_as_extern($func);
 $externs = new Wasm\Vec\Extern([$extern]);
 wasm_instance_new($store, $module, $externs);
 
-$func = wasm_func_new($store, $functype, function () { var_dump('Hello from PHP closure'); });
+$func = wasm_func_new($store, $functype, function () { var_dump('Hello from PHP closure'); return 42; });
 $extern = wasm_func_as_extern($func);
 $externs = new Wasm\Vec\Extern([$extern]);
 wasm_instance_new($store, $module, $externs);

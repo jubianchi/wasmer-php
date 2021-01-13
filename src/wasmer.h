@@ -37,3 +37,5 @@ typedef struct wasm_extern_vec_c {
 } wasm_extern_vec_c;
 #define Z_WASM_EXTERN_VEC_P(zv) ((wasm_extern_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_extern_vec_c, std)))
 
+Z_WASMER_DECLARE_CE_STRUCT(val)
+#define Z_WASM_VAL_VEC_P(zv) Z_WASMER_DECLARE_CE_P(val, zv)

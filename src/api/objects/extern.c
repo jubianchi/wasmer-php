@@ -7,6 +7,7 @@
 #include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(extern)
+WASMER_IMPORT_RESOURCE(func)
 
 WASMER_DECLARE_OWN(extern)
 
@@ -25,10 +26,21 @@ PHP_FUNCTION (wasm_extern_type) {
 }
 
 PHP_FUNCTION (wasm_extern_as_func) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    zval *extern_val;
 
-    // TODO(jubianchi): Implement
-    zend_throw_error(NULL, "Not yet implemented");
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(extern_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(extern)
+
+    wasm_extern_t *wasm_extern = Z_RES_P(extern_val)->ptr;
+    wasm_func_t *func = wasm_extern_as_func(wasm_extern);
+
+    zend_resource *extern_res;
+    extern_res = zend_register_resource(func, le_wasm_func);
+
+    RETURN_RES(extern_res);
 }
 
 PHP_FUNCTION (wasm_extern_as_global) {
@@ -52,7 +64,6 @@ PHP_FUNCTION (wasm_extern_as_memory) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-// TODO(jubianchi): Implement wasm_extern_vec_t
 PHP_METHOD (Wasm_Vec_Extern, __construct) {
     zend_array *externs_ht;
     zend_long size;

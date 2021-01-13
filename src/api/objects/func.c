@@ -4,6 +4,7 @@
 #include "wasmer_wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(func)
 WASMER_IMPORT_RESOURCE(functype)
@@ -20,7 +21,6 @@ typedef struct {
 wasm_trap_t *func_trampoline(void *env, const wasm_val_vec_t *args, wasm_val_vec_t *results) {
     func_env *fenv = (func_env *) env;
     zval retval;
-    zval inval;
 
     ZVAL_UNDEF(&retval);
 
@@ -122,10 +122,26 @@ PHP_FUNCTION (wasm_func_result_arity) {
 }
 
 PHP_FUNCTION (wasm_func_call) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    zval *func_val;
+    zval *args_val;
+    zval *results_val;
 
-    // TODO(jubianchi): Implement
-    zend_throw_error(NULL, "Not yet implemented");
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 3, 3)
+            Z_PARAM_RESOURCE(func_val)
+            Z_PARAM_OBJECT(args_val)
+            Z_PARAM_OBJECT(results_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(func)
+
+    wasm_func_t *func = Z_RES_P(func_val)->ptr;
+
+    wasm_val_vec_c *args = Z_WASM_VAL_VEC_P(args_val);
+    wasm_val_vec_c *results = Z_WASM_VAL_VEC_P(results_val);
+
+    wasm_func_call(func, &args->vec, &results->vec);
+
+    RETURN_NULL();
 }
 
 PHP_FUNCTION (wasm_func_as_extern) {

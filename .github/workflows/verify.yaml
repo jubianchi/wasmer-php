@@ -1,0 +1,39 @@
+name: Verify
+
+on: [pull_request]
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Setup tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang-format clang-tidy
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          phpize
+          ./configure
+      - name: Format
+        run: |
+          make format
+      - name: Lint
+        if: ${{ failure() }} || !${{ failure() }}
+        run: |
+          make lint
+      - name: Archive results
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          retention-days: 3
+          path: |
+            replacements.xml
+            fixes.yml

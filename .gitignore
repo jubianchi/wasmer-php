@@ -18,6 +18,7 @@ config.sub
 configure
 configure.ac
 configure.in
+fixes.yml
 install-sh
 libtool
 ltmain.sh
@@ -28,6 +29,7 @@ Makefile.objects
 missing
 mkinstalldirs
 modules
+replacements.xml
 run-tests.php
 tests/**/*.diff
 tests/**/*.out

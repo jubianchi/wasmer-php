@@ -1,7 +1,11 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1537d9af2fb135b2d5639ba6ff64e57ef2167742 */
+ * Stub hash: 36f285a2769746df39b86f866974a7d9c1c4cdf7 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_config_delete, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, config)
 ZEND_END_ARG_INFO()
 
 #define arginfo_wasm_engine_new arginfo_wasm_config_new
@@ -254,19 +258,27 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_func_delete, 0, 1, _IS_BOOL
 	ZEND_ARG_INFO(0, func)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_func_call, 0, 3, _IS_BOOL, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_func_type, 0, 0, 1)
 	ZEND_ARG_INFO(0, func)
-	ZEND_ARG_OBJ_INFO(0, args, Wasm\\Vec\\Extern, 0)
-	ZEND_ARG_OBJ_INFO(0, results, Wasm\\Vec\\Extern, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_func_as_extern, 0, 0, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_func_call, 0, 3, _IS_BOOL, 0)
 	ZEND_ARG_INFO(0, func)
+	ZEND_ARG_OBJ_INFO(0, args, Wasm\\Vec\\Val, 0)
+	ZEND_ARG_OBJ_INFO(0, results, Wasm\\Vec\\Val, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_func_as_extern arginfo_wasm_func_type
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_extern_as_func, 0, 0, 1)
 	ZEND_ARG_INFO(0, extern)
 ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_extern_as_global arginfo_wasm_extern_as_func
+
+#define arginfo_wasm_extern_as_table arginfo_wasm_extern_as_func
+
+#define arginfo_wasm_extern_as_memory arginfo_wasm_extern_as_func
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_instance_new, 0, 0, 3)
 	ZEND_ARG_INFO(0, store)
@@ -438,6 +450,7 @@ ZEND_END_ARG_INFO()
 
 
 ZEND_FUNCTION(wasm_config_new);
+ZEND_FUNCTION(wasm_config_delete);
 ZEND_FUNCTION(wasm_engine_new);
 ZEND_FUNCTION(wasm_engine_new_with_config);
 ZEND_FUNCTION(wasm_engine_delete);
@@ -510,9 +523,13 @@ ZEND_FUNCTION(wasm_module_name);
 ZEND_FUNCTION(wasm_module_set_name);
 ZEND_FUNCTION(wasm_func_new);
 ZEND_FUNCTION(wasm_func_delete);
+ZEND_FUNCTION(wasm_func_type);
 ZEND_FUNCTION(wasm_func_call);
 ZEND_FUNCTION(wasm_func_as_extern);
 ZEND_FUNCTION(wasm_extern_as_func);
+ZEND_FUNCTION(wasm_extern_as_global);
+ZEND_FUNCTION(wasm_extern_as_table);
+ZEND_FUNCTION(wasm_extern_as_memory);
 ZEND_FUNCTION(wasm_instance_new);
 ZEND_FUNCTION(wasm_instance_delete);
 ZEND_FUNCTION(wasm_instance_exports);
@@ -581,6 +598,7 @@ ZEND_METHOD(Wasm_Vec_Val, offsetUnset);
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_config_new, arginfo_wasm_config_new)
+	ZEND_FE(wasm_config_delete, arginfo_wasm_config_delete)
 	ZEND_FE(wasm_engine_new, arginfo_wasm_engine_new)
 	ZEND_FE(wasm_engine_new_with_config, arginfo_wasm_engine_new_with_config)
 	ZEND_FE(wasm_engine_delete, arginfo_wasm_engine_delete)
@@ -653,9 +671,13 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_module_set_name, arginfo_wasm_module_set_name)
 	ZEND_FE(wasm_func_new, arginfo_wasm_func_new)
 	ZEND_FE(wasm_func_delete, arginfo_wasm_func_delete)
+	ZEND_FE(wasm_func_type, arginfo_wasm_func_type)
 	ZEND_FE(wasm_func_call, arginfo_wasm_func_call)
 	ZEND_FE(wasm_func_as_extern, arginfo_wasm_func_as_extern)
 	ZEND_FE(wasm_extern_as_func, arginfo_wasm_extern_as_func)
+	ZEND_FE(wasm_extern_as_global, arginfo_wasm_extern_as_global)
+	ZEND_FE(wasm_extern_as_table, arginfo_wasm_extern_as_table)
+	ZEND_FE(wasm_extern_as_memory, arginfo_wasm_extern_as_memory)
 	ZEND_FE(wasm_instance_new, arginfo_wasm_instance_new)
 	ZEND_FE(wasm_instance_delete, arginfo_wasm_instance_delete)
 	ZEND_FE(wasm_instance_exports, arginfo_wasm_instance_exports)

@@ -1,3 +1,45 @@
+typedef struct wasmer_res {
+    bool owned;
+    union wasmer_res_inner {
+        wasm_engine_t *engine;
+        wasm_store_t *store;
+        wasm_config_t *config;
+
+        wasm_exporttype_t *exporttype;
+        wasm_functype_t *functype;
+        wasm_globaltype_t *globaltype;
+        wasm_tabletype_t *tabletype;
+        wasm_memorytype_t *memorytype;
+        wasm_externtype_t *externtype;
+        wasm_importtype_t *importtype;
+        wasm_valtype_t *valtype;
+
+        wasm_global_t *global;
+        wasm_instance_t *instance;
+        wasm_module_t *module;
+        wasm_extern_t *xtern;
+        wasm_table_t *table;
+        wasm_memory_t *memory;
+        wasm_func_t *func;
+    } inner;
+} wasmer_res;
+
+/**
+ * Convert a zval* into a wasmer_res*
+ */
+#define WASMER_RES_P(name) ((wasmer_res*)Z_RES_P(name)->ptr)
+/**
+ * Convert a zval* into a wasmer_res* and returns the inner type
+ */
+#define WASMER_RES_P_INNER(name, type) WASMER_RES_P(name)->inner.type
+
+/**
+ * Returns the inner type from a wasmer_res*
+ */
+#define WASMER_RES_INNER(name, type) name->inner.type
+
+
+
 #define Z_WASMER_DECLARE_CE_STRUCT(name)\
 typedef struct wasm_##name##_vec_c {\
     wasm_##name##_vec_t vec;\

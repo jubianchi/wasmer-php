@@ -6,10 +6,9 @@
 #include "../macros.h"
 #include "../../wasmer.h"
 
-WASMER_IMPORT_RESOURCE(externtype)
-WASMER_IMPORT_RESOURCE(importtype)
-
 WASMER_DECLARE_TYPE(ImportType, IMPORTTYPE, importtype)
+
+WASMER_IMPORT_RESOURCE(externtype)
 
 PHP_FUNCTION (wasm_importtype_new) {
     char *module;
@@ -34,10 +33,14 @@ PHP_FUNCTION (wasm_importtype_new) {
     name_vec->size = name_len;
     name_vec->data = name;
 
-    wasm_importtype_t *importtype = wasm_importtype_new(module_vec, name_vec, Z_RES_P(externtype_val)->ptr);
+    wasmer_res *externtype_res = WASMER_RES_P(externtype_val);
+    externtype_res->owned = false;
 
-    zend_resource *importtype_res;
-    importtype_res = zend_register_resource(importtype, le_wasm_importtype);
+    wasmer_res *importtype = emalloc(sizeof(wasmer_res));
+    importtype->inner.importtype = wasm_importtype_new(module_vec, name_vec, WASMER_RES_INNER(externtype_res, externtype));
+    importtype->owned = true;
+
+    zend_resource *importtype_res = zend_register_resource(importtype, le_wasm_importtype);
 
     RETURN_RES(importtype_res);
 }
@@ -51,7 +54,7 @@ PHP_FUNCTION (wasm_importtype_module) {
 
     WASMER_FETCH_RESOURCE(importtype)
 
-    const wasm_name_t *module = wasm_importtype_module(Z_RES_P(importtype_val)->ptr);
+    const wasm_name_t *module = wasm_importtype_module(WASMER_RES_P_INNER(importtype_val, importtype));
 
     RETURN_STRINGL(module->data, module->size);
 }
@@ -65,7 +68,7 @@ PHP_FUNCTION (wasm_importtype_name) {
 
     WASMER_FETCH_RESOURCE(importtype)
 
-    const wasm_name_t *name = wasm_importtype_name(Z_RES_P(importtype_val)->ptr);
+    const wasm_name_t *name = wasm_importtype_name(WASMER_RES_P_INNER(importtype_val, importtype));
 
     RETURN_STRINGL(name->data, name->size);
 }
@@ -79,10 +82,11 @@ PHP_FUNCTION (wasm_importtype_type) {
 
     WASMER_FETCH_RESOURCE(importtype)
 
-    const wasm_externtype_t *externtype = wasm_importtype_type(Z_RES_P(importtype_val)->ptr);
+    wasmer_res *externtype = emalloc(sizeof(wasmer_res));
+    externtype->inner.externtype = wasm_importtype_type(WASMER_RES_P_INNER(importtype_val, importtype));
+    externtype->owned = false;
 
-    zend_resource *externtype_res;
-    externtype_res = zend_register_resource((void *) externtype, le_wasm_externtype);
+    zend_resource *externtype_res = zend_register_resource(externtype, le_wasm_externtype);
 
     RETURN_RES(externtype_res);
 }

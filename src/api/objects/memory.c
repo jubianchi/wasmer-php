@@ -14,7 +14,7 @@ PHP_FUNCTION (wasm_memory_new) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_DELETE_WITHOUT_DTOR(memory)
+WASMER_DELETE_RESOURCE(memory)
 
 PHP_FUNCTION (wasm_memory_type) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -51,7 +51,7 @@ PHP_FUNCTION (wasm_memory_grow) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_COPY(memory)
+// TODO(jubianchi): Implement copy
 
 PHP_FUNCTION (wasm_memory_as_extern) {
     ZEND_PARSE_PARAMETERS_NONE();

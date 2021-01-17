@@ -25,11 +25,14 @@ PHP_FUNCTION (wasm_globaltype_new) {
     WASMER_FETCH_RESOURCE(valtype)
 
     int mutability = zval_get_long(mutability_val);
+    wasmer_res *valtype_res = WASMER_RES_P(valtype_val);
+    valtype_res->owned = false;
 
-    wasm_globaltype_t *globaltype = wasm_globaltype_new(Z_RES_P(valtype_val)->ptr, mutability);
+    wasmer_res *globaltype = emalloc(sizeof(wasmer_res));
+    globaltype->inner.globaltype = wasm_globaltype_new(WASMER_RES_INNER(valtype_res, valtype), mutability);
+    globaltype->owned = true;
 
-    zend_resource *globaltype_res;
-    globaltype_res = zend_register_resource(globaltype, le_wasm_globaltype);
+    zend_resource *globaltype_res = zend_register_resource(globaltype, le_wasm_globaltype);
 
     RETURN_RES(globaltype_res);
 }
@@ -43,10 +46,11 @@ PHP_FUNCTION (wasm_globaltype_content) {
 
     WASMER_FETCH_RESOURCE(globaltype)
 
-    const wasm_valtype_t *valtype = wasm_globaltype_content(Z_RES_P(globaltype_val)->ptr);
+    wasmer_res *valtype = emalloc(sizeof(wasmer_res));
+    valtype->inner.valtype = wasm_globaltype_content(WASMER_RES_P_INNER(globaltype_val, globaltype));
+    valtype->owned = false;
 
-    zend_resource *valtype_res;
-    valtype_res = zend_register_resource((void *) valtype, le_wasm_valtype);
+    zend_resource *valtype_res = zend_register_resource(valtype, le_wasm_valtype);
 
     RETURN_RES(valtype_res);
 }
@@ -60,7 +64,7 @@ PHP_FUNCTION (wasm_globaltype_mutability) {
 
     WASMER_FETCH_RESOURCE(globaltype)
 
-    int mutability = wasm_globaltype_mutability(Z_RES_P(globaltype_val)->ptr);
+    int mutability = wasm_globaltype_mutability(WASMER_RES_P_INNER(globaltype_val, globaltype));
 
     RETURN_LONG(mutability);
 }
@@ -74,10 +78,14 @@ PHP_FUNCTION (wasm_globaltype_as_externtype) {
 
     WASMER_FETCH_RESOURCE(globaltype)
 
-    const wasm_externtype_t *externtype = wasm_globaltype_as_externtype(Z_RES_P(globaltype_val)->ptr);
+    wasmer_res *globaltype_res = WASMER_RES_P(globaltype_val);
+    globaltype_res->owned = false;
 
-    zend_resource *externtype_res;
-    externtype_res = zend_register_resource((void *) externtype, le_wasm_externtype);
+    wasmer_res *externtype = emalloc(sizeof(wasmer_res));
+    externtype->inner.externtype = wasm_globaltype_as_externtype(WASMER_RES_INNER(globaltype_res, globaltype));
+    externtype->owned = false;
+
+    zend_resource *externtype_res = zend_register_resource(externtype, le_wasm_externtype);
 
     RETURN_RES(externtype_res);
 }

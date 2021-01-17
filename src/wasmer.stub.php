@@ -133,6 +133,8 @@ namespace {
 
     /** @return resource */
     function wasm_config_new() {}
+    /** @param resource $config */
+    function wasm_config_delete($config): bool {}
 
 
     // Engine
@@ -501,8 +503,14 @@ namespace {
     function wasm_func_new($store, $functype, callable $func) {}
     /** @param resource $func */
     function wasm_func_delete($func): bool {}
+    /**
+     * @param resource $func
+     *
+     * @return resource
+     */
+    function wasm_func_type($func) {}
     /** @param resource $func */
-    function wasm_func_call($func, Wasm\Vec\Extern $args, Wasm\Vec\Extern $results): bool {}
+    function wasm_func_call($func, Wasm\Vec\Val $args, Wasm\Vec\Val $results): bool {}
     /**
      * @param resource $func
      *
@@ -534,7 +542,24 @@ namespace {
      * @return resource
      */
     function wasm_extern_as_func($extern) {}
-    // TODO(jubianchi): Add extern
+    /**
+     * @param resource $extern
+     *
+     * @return resource
+     */
+    function wasm_extern_as_global($extern) {}
+    /**
+     * @param resource $extern
+     *
+     * @return resource
+     */
+    function wasm_extern_as_table($extern) {}
+    /**
+     * @param resource $extern
+     *
+     * @return resource
+     */
+    function wasm_extern_as_memory($extern) {}
 
 
     // Module Instances

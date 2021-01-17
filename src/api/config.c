@@ -2,15 +2,19 @@
 
 #include "wasm.h"
 
-extern int le_wasm_config;
+#include "./macros.h"
+#include "../wasmer.h"
+
+WASMER_DECLARE_OWN(config)
 
 PHP_FUNCTION (wasm_config_new) {
     ZEND_PARSE_PARAMETERS_NONE();
 
-    wasm_config_t *config = wasm_config_new();
+    wasmer_res *config = emalloc(sizeof(wasmer_res));
+    config->inner.config = wasm_config_new();
+    config->owned = true;
 
-    zend_resource *config_res;
-    config_res = zend_register_resource(config, le_wasm_config);
+    zend_resource *config_res = zend_register_resource(config, le_wasm_config);
 
     RETURN_RES(config_res);
 }

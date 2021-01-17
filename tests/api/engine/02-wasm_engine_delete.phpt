@@ -13,6 +13,7 @@ try {
     var_dump($e->getMessage());
 }
 
+?>
 --EXPECTF--
 bool(true)
 string(77) "wasm_engine_delete(): supplied resource is not a valid wasm_engine_t resource"

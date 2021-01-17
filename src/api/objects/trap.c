@@ -14,7 +14,7 @@ PHP_FUNCTION (wasm_trap_new) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_DELETE_WITHOUT_DTOR(trap)
+WASMER_DELETE_RESOURCE(trap)
 
 PHP_FUNCTION (wasm_trap_message) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -37,4 +37,4 @@ PHP_FUNCTION (wasm_trap_trace) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_COPY(trap)
+// TODO(jubianchi): Implement copy

@@ -13,7 +13,7 @@ PHP_FUNCTION (wasm_table_new) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_DELETE_WITHOUT_DTOR(table)
+WASMER_DELETE_RESOURCE(table)
 
 PHP_FUNCTION (wasm_table_type) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -50,7 +50,7 @@ PHP_FUNCTION (wasm_table_grow) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_COPY(table)
+// TODO(jubianchi): Implement copy
 
 PHP_FUNCTION (wasm_table_as_extern) {
     ZEND_PARSE_PARAMETERS_NONE();

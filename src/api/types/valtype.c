@@ -17,10 +17,11 @@ PHP_FUNCTION (wasm_valtype_new) {
 
     int valkind = zval_get_long(valkind_val);
 
-    wasm_valtype_t *valtype = wasm_valtype_new(valkind);
+    wasmer_res *valtype = emalloc(sizeof(wasmer_res));
+    valtype->inner.valtype = wasm_valtype_new(valkind);
+    valtype->owned = true;
 
-    zend_resource *valtype_res;
-    valtype_res = zend_register_resource(valtype, le_wasm_valtype);
+    zend_resource *valtype_res = zend_register_resource(valtype, le_wasm_valtype);
 
     RETURN_RES(valtype_res);
 }
@@ -34,7 +35,7 @@ PHP_FUNCTION (wasm_valtype_kind) {
 
     WASMER_FETCH_RESOURCE(valtype)
 
-    int kind = wasm_valtype_kind(Z_RES_P(valtype_val)->ptr);
+    int kind = wasm_valtype_kind(WASMER_RES_P_INNER(valtype_val, valtype));
 
     RETURN_LONG(kind);
 }
@@ -48,7 +49,7 @@ PHP_FUNCTION (wasm_valtype_is_num) {
 
     WASMER_FETCH_RESOURCE(valtype)
 
-    bool is_num = wasm_valtype_is_num(Z_RES_P(valtype_val)->ptr);
+    bool is_num = wasm_valtype_is_num(WASMER_RES_P_INNER(valtype_val, valtype));
 
     RETURN_BOOL(is_num);
 }
@@ -62,7 +63,7 @@ PHP_FUNCTION (wasm_valtype_is_ref) {
 
     WASMER_FETCH_RESOURCE(valtype)
 
-    bool is_ref = wasm_valtype_is_ref(Z_RES_P(valtype_val)->ptr);
+    bool is_ref = wasm_valtype_is_ref(WASMER_RES_P_INNER(valtype_val, valtype));
 
     RETURN_BOOL(is_ref);
 }

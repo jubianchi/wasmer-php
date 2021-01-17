@@ -1,15 +1,14 @@
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 
-#include "wasm.h"
+#include "wasmer_wasm.h"
 
 #include "../macros.h"
 #include "../../wasmer.h"
 
-WASMER_IMPORT_RESOURCE(extern)
-WASMER_IMPORT_RESOURCE(func)
-
 WASMER_DECLARE_OWN(extern)
+
+WASMER_IMPORT_RESOURCE(func)
 
 PHP_FUNCTION (wasm_extern_kind) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -34,34 +33,59 @@ PHP_FUNCTION (wasm_extern_as_func) {
 
     WASMER_FETCH_RESOURCE(extern)
 
-    wasm_extern_t *wasm_extern = Z_RES_P(extern_val)->ptr;
-    wasm_func_t *func = wasm_extern_as_func(wasm_extern);
+    wasmer_res *func = emalloc(sizeof(wasmer_res));
+    func->inner.func = wasm_extern_as_func(WASMER_RES_P_INNER(extern_val, xtern));
+    func->owned = true;
 
-    zend_resource *extern_res;
-    extern_res = zend_register_resource(func, le_wasm_func);
-
-    RETURN_RES(extern_res);
+    RETURN_RES(zend_register_resource(func, le_wasm_func));
 }
 
 PHP_FUNCTION (wasm_extern_as_global) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    zval *extern_val;
 
-    // TODO(jubianchi): Implement
-    zend_throw_error(NULL, "Not yet implemented");
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(extern_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(extern)
+
+    wasmer_res *global = emalloc(sizeof(wasmer_res));
+    global->inner.global = wasm_extern_as_global(WASMER_RES_P_INNER(extern_val, xtern));
+    global->owned = false;
+
+    RETURN_RES(zend_register_resource(global, le_wasm_func));
 }
 
 PHP_FUNCTION (wasm_extern_as_table) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    zval *extern_val;
 
-    // TODO(jubianchi): Implement
-    zend_throw_error(NULL, "Not yet implemented");
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(extern_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(extern)
+
+    wasmer_res *table = emalloc(sizeof(wasmer_res));
+    table->inner.table = wasm_extern_as_table(WASMER_RES_P_INNER(extern_val, xtern));
+    table->owned = false;
+
+    RETURN_RES(zend_register_resource(table, le_wasm_func));
 }
 
 PHP_FUNCTION (wasm_extern_as_memory) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    zval *extern_val;
 
-    // TODO(jubianchi): Implement
-    zend_throw_error(NULL, "Not yet implemented");
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(extern_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(extern)
+
+    wasmer_res *memory = emalloc(sizeof(wasmer_res));
+    memory->inner.memory = wasm_extern_as_memory(WASMER_RES_P_INNER(extern_val, xtern));
+    memory->owned = false;
+
+    RETURN_RES(zend_register_resource(memory, le_wasm_func));
 }
 
 PHP_METHOD (Wasm_Vec_Extern, __construct) {
@@ -87,7 +111,10 @@ PHP_METHOD (Wasm_Vec_Extern, __construct) {
         zend_ulong index;
 
         ZEND_HASH_REVERSE_FOREACH_NUM_KEY_VAL(externs_ht, index, tmp) {
-                vec.data[index] = Z_RES_P(tmp)->ptr;
+                    wasmer_res *extern_res = WASMER_RES_P(tmp);
+                    extern_res->owned = false;
+
+                    vec.data[index] = WASMER_RES_INNER(extern_res, xtern);
         } ZEND_HASH_FOREACH_END();
     } else {
         wasm_extern_vec_new_uninitialized(&vec, size);
@@ -132,13 +159,16 @@ PHP_METHOD (Wasm_Vec_Extern, offsetGet) {
     if(offset >= wasm_extern_vec->vec.size) {
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\Extern::offsetGet($offset) index out of bounds");
     }
+
     if(wasm_extern_vec->vec.data[offset] == NULL) {
         RETURN_NULL();
     }
-    zend_resource *extern_res;
-    extern_res = zend_register_resource(wasm_extern_vec->vec.data[offset], le_wasm_extern);
 
-    RETURN_RES(extern_res);
+    wasmer_res *xtern = emalloc(sizeof(wasmer_res));
+    xtern->inner.xtern = wasm_extern_vec->vec.data[offset];
+    xtern->owned = false;
+
+    RETURN_RES(zend_register_resource(xtern, le_wasm_extern));
 }
 
 PHP_METHOD (Wasm_Vec_Extern, offsetSet) {
@@ -158,7 +188,10 @@ PHP_METHOD (Wasm_Vec_Extern, offsetSet) {
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\Extern::offsetSet($offset) index out of bounds");
     }
 
-    wasm_extern_vec->vec.data[offset] = Z_RES_P(extern_val)->ptr;
+    wasmer_res *extern_res = WASMER_RES_P(extern_val);
+    extern_res->owned = false;
+
+    wasm_extern_vec->vec.data[offset] = WASMER_RES_INNER(extern_res, xtern);
 }
 
 PHP_METHOD (Wasm_Vec_Extern, offsetUnset) {\

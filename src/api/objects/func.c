@@ -6,12 +6,11 @@
 #include "../macros.h"
 #include "../../wasmer.h"
 
-WASMER_IMPORT_RESOURCE(func)
+WASMER_DECLARE_OWN(func)
+
 WASMER_IMPORT_RESOURCE(functype)
 WASMER_IMPORT_RESOURCE(store)
 WASMER_IMPORT_RESOURCE(extern)
-
-WASMER_DECLARE_OWN(func)
 
 typedef struct {
     zend_fcall_info fci;
@@ -26,9 +25,11 @@ wasm_trap_t *func_trampoline(void *env, const wasm_val_vec_t *args, wasm_val_vec
 
     zend_fcall_info fci = fenv->fci;
     fci.retval = &retval;
+    fci.object = NULL;
 
     // TODO(jubianchi): Fix tests
-    zend_result res = zend_call_function(&fci, &fenv->fcc);
+    //zend_result res = zend_call_function(&fci, &fenv->fcc);
+    zend_call_function(&fci, &fenv->fcc);
 
     return NULL;
 }
@@ -47,21 +48,22 @@ PHP_FUNCTION (wasm_func_new) {
     WASMER_FETCH_RESOURCE(store)
     WASMER_FETCH_RESOURCE(functype)
 
-    wasm_func_t *func = wasm_func_new_with_env(
-            Z_RES_P(store_val)->ptr,
-            Z_RES_P(functype_val)->ptr,
+    wasmer_res *func = emalloc(sizeof(wasmer_res));
+    func->inner.func = wasm_func_new_with_env(
+            WASMER_RES_P_INNER(store_val, store),
+            WASMER_RES_P_INNER(functype_val, functype),
             &func_trampoline,
             env,
             // TODO(jubianchi): Implement env finalizer
             NULL
     );
+    func->owned = true;
 
-    if (!func) {
+    if (!func->inner.func) {
         zend_throw_exception_ex(zend_ce_exception, 0, "%s", "Failed to create function");\
     }
 
-    zend_resource *func_res;
-    func_res = zend_register_resource(func, le_wasm_func);
+    zend_resource *func_res = zend_register_resource(func, le_wasm_func);
 
     RETURN_RES(func_res);
 }
@@ -82,13 +84,11 @@ PHP_FUNCTION (wasm_func_type) {
 
     WASMER_FETCH_RESOURCE(func)
 
-    wasm_func_t *func = Z_RES_P(func_val)->ptr;
-    wasm_functype_t *functype = wasm_func_type(func);
+    wasmer_res *functype = emalloc(sizeof(wasmer_res));
+    functype->inner.functype = wasm_func_type(WASMER_RES_P_INNER(func_val, func));
+    functype->owned = false;
 
-    zend_resource *functype_res;
-    functype_res = zend_register_resource(functype, le_wasm_functype);
-
-    RETURN_RES(functype_res);
+    RETURN_RES(zend_register_resource(functype, le_wasm_functype));
 }
 
 PHP_FUNCTION (wasm_func_param_arity) {
@@ -100,8 +100,7 @@ PHP_FUNCTION (wasm_func_param_arity) {
 
     WASMER_FETCH_RESOURCE(func)
 
-    wasm_func_t *func = Z_RES_P(func_val)->ptr;
-    size_t arity = wasm_func_param_arity(func);
+    size_t arity = wasm_func_param_arity(WASMER_RES_P_INNER(func_val, func));
 
     RETURN_LONG(arity);
 }
@@ -115,8 +114,7 @@ PHP_FUNCTION (wasm_func_result_arity) {
 
     WASMER_FETCH_RESOURCE(func)
 
-    wasm_func_t *func = Z_RES_P(func_val)->ptr;
-    size_t arity = wasm_func_result_arity(func);
+    size_t arity = wasm_func_result_arity(WASMER_RES_P_INNER(func_val, func));
 
     RETURN_LONG(arity);
 }
@@ -134,14 +132,15 @@ PHP_FUNCTION (wasm_func_call) {
 
     WASMER_FETCH_RESOURCE(func)
 
-    wasm_func_t *func = Z_RES_P(func_val)->ptr;
-
+    wasm_func_t *func = WASMER_RES_P_INNER(func_val, func);
     wasm_val_vec_c *args = Z_WASM_VAL_VEC_P(args_val);
     wasm_val_vec_c *results = Z_WASM_VAL_VEC_P(results_val);
 
+    // TODO(jubianchi): Implements traps
+    // TODO(jubianchi): Implements results
     wasm_func_call(func, &args->vec, &results->vec);
 
-    RETURN_NULL();
+    RETURN_TRUE;
 }
 
 PHP_FUNCTION (wasm_func_as_extern) {
@@ -153,10 +152,9 @@ PHP_FUNCTION (wasm_func_as_extern) {
 
     WASMER_FETCH_RESOURCE(func)
 
-    const wasm_extern_t *wasm_extern = wasm_func_as_extern(Z_RES_P(func_val)->ptr);
+    wasmer_res *wasm_extern = emalloc(sizeof(wasmer_res));
+    wasm_extern->inner.xtern = wasm_func_as_extern(WASMER_RES_P_INNER(func_val, func));
+    wasm_extern->owned = false;
 
-    zend_resource *extern_res;
-    extern_res = zend_register_resource((void *) wasm_extern, le_wasm_extern);
-
-    RETURN_RES(extern_res);
+    RETURN_RES(zend_register_resource(wasm_extern, le_wasm_extern));
 }

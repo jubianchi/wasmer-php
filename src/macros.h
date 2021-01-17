@@ -3,9 +3,15 @@ int le_wasm_##name;\
 const char *le_wasm_##name##_name = "wasm_"#name"_t";
 
 #define WASMER_RESOURCE_DTOR(name)\
-static ZEND_RSRC_DTOR_FUNC(wasm_##name##_dtor) {\
-    wasm_##name##_t *name = (wasm_##name##_t *)res->ptr;\
-    wasm_##name##_delete(name);\
+static ZEND_RSRC_DTOR_FUNC(wasm_##name##_dtor) { \
+    wasmer_res *name##_res = (wasmer_res*)res->ptr;\
+    wasm_##name##_t *wasm_##name = name##_res->inner.name;\
+    \
+    if (name##_res->owned) {\
+        wasm_##name##_delete(wasm_##name);\
+    }\
+    \
+    efree(res->ptr);\
 }
 
 #define WASMER_RESOURCE(name)\

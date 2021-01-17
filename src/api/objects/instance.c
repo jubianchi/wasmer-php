@@ -15,7 +15,6 @@ extern zend_class_entry *wasm_vec_extern_ce;
 WASMER_DECLARE_OWN(instance)
 
 // TODO(jubianchi): Implements imports
-// TODO(jubianchi): Implements traps
 PHP_FUNCTION (wasm_instance_new) {
     zval *store_val;
     zval *module_val;
@@ -30,12 +29,14 @@ PHP_FUNCTION (wasm_instance_new) {
     WASMER_FETCH_RESOURCE(store)
     WASMER_FETCH_RESOURCE(module)
 
-    wasm_store_t *store = Z_RES_P(store_val)->ptr;
-    wasm_module_t *module = Z_RES_P(module_val)->ptr;
-
+    wasm_store_t *store = WASMER_RES_P_INNER(store_val, store);
+    wasm_module_t *module = WASMER_RES_P_INNER(module_val, module);
     wasm_extern_vec_c *externs = Z_WASM_EXTERN_VEC_P(externs_val);
 
-    wasm_instance_t *instance = wasm_instance_new(store, module, &externs->vec, NULL);
+    wasmer_res *instance = emalloc(sizeof(wasmer_res));
+    // TODO(jubianchi): Implements traps
+    instance->inner.instance = wasm_instance_new(store, module, &externs->vec, NULL);
+    instance->owned = true;
 
     WASMER_HANDLE_ERROR
 
@@ -53,19 +54,19 @@ PHP_FUNCTION (wasm_instance_exports) {
 
     WASMER_FETCH_RESOURCE(instance)
 
-    wasm_instance_t *instance = Z_RES_P(instance_val)->ptr;
+    wasm_instance_t *instance = WASMER_RES_P_INNER(instance_val, instance);
 
-    wasm_extern_vec_t *externs = emalloc(sizeof(wasm_extern_vec_t));
-    wasm_instance_exports(instance, externs);
+    wasm_extern_vec_t externs;
+    wasm_instance_exports(instance, &externs);
 
     zval obj;
     object_init_ex(&obj, wasm_vec_extern_ce);
     wasm_extern_vec_c *ce = Z_WASM_EXTERN_VEC_P(&obj);
-    ce->vec = *externs;
+    ce->vec = externs;
 
-    efree(externs);
+    //efree(externs);
 
     RETURN_OBJ(Z_OBJ(obj));
 }
 
-WASMER_COPY(instance)
+// TODO(jubianchi): Implement copy

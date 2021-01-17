@@ -13,5 +13,6 @@ PHP_FUNCTION (wasm_foreign_new) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_DELETE_WITHOUT_DTOR(foreign)
-WASMER_COPY(foreign)
+WASMER_DELETE_RESOURCE(foreign)
+
+// TODO(jubianchi): Implement copy

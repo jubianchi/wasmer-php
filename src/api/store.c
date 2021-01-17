@@ -2,10 +2,12 @@
 
 #include "wasm.h"
 
-#include "macros.h"
+#include "./macros.h"
+#include "../wasmer.h"
+
+WASMER_DECLARE_OWN(store)
 
 WASMER_IMPORT_RESOURCE(engine)
-WASMER_IMPORT_RESOURCE(store)
 
 PHP_FUNCTION (wasm_store_new) {
     zval *engine_val;
@@ -16,12 +18,12 @@ PHP_FUNCTION (wasm_store_new) {
 
     WASMER_FETCH_RESOURCE(engine)
 
-    wasm_store_t *store = wasm_store_new(Z_RES_P(engine_val)->ptr);
+    wasmer_res *store = emalloc(sizeof(wasmer_res));
+    store->inner.store = wasm_store_new(WASMER_RES_P_INNER(engine_val, engine));
+    store->owned = true;
 
     zend_resource *store_res;
     store_res = zend_register_resource(store, le_wasm_store);
 
     RETURN_RES(store_res);
 }
-
-WASMER_DELETE_WITHOUT_DTOR(store)

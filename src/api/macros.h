@@ -20,15 +20,16 @@ PHP_FUNCTION (wasm_##name##_copy) {\
     \
     WASMER_FETCH_RESOURCE(name)\
     \
-    wasm_##name##_t *wasm_##name = wasm_##name##_copy(Z_RES_P(name##_val)->ptr);\
+    wasmer_res *wasm_##name = emalloc(sizeof(wasmer_res));\
+    wasm_##name->inner.name = wasm_##name##_copy(((wasmer_res*)Z_RES_P(name##_val)->ptr)->inner.name);\
+    wasm_##name->owned = true;\
     \
-    zend_resource *name##_res;\
-    name##_res = zend_register_resource(wasm_##name, le_wasm_##name);\
+    zend_resource *name##_res = zend_register_resource(wasm_##name, le_wasm_##name);\
     \
     RETURN_RES(name##_res);\
 }
 
-#define WASMER_DELETE_WITHOUT_DTOR(name)\
+#define WASMER_DELETE_RESOURCE(name)\
 PHP_FUNCTION (wasm_##name##_delete) {\
     zval *name##_val;\
     \
@@ -79,7 +80,10 @@ PHP_METHOD (Wasm_Vec_##class_name, __construct) {\
         zend_ulong index;\
         \
         ZEND_HASH_REVERSE_FOREACH_NUM_KEY_VAL(name##s_ht, index, tmp) {\
-                vec.data[index] = (wasm_##name##_t*)tmp;\
+                wasmer_res *name##_res = WASMER_RES_P(tmp);\
+                name##_res->owned = false;\
+                \
+                vec.data[index] = WASMER_RES_INNER(name##_res, name);\
         } ZEND_HASH_FOREACH_END();\
     } else {\
         wasm_##name##_vec_new_uninitialized(&vec, size);\
@@ -133,8 +137,11 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetGet) {\
         RETURN_NULL();\
     }\
     \
-    zend_resource *name##_res;\
-    name##_res = zend_register_resource(wasm_##name##_vec->vec.data[offset], le_wasm_##name);\
+    wasmer_res *name = emalloc(sizeof(wasmer_res));\
+    name->inner.name = wasm_##name##_vec->vec.data[offset];\
+    name->owned = false;\
+    \
+    zend_resource *name##_res = zend_register_resource(name, le_wasm_##name);\
     \
     RETURN_RES(name##_res);\
 }
@@ -156,7 +163,11 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetSet) {\
     if(offset >= wasm_##name##_vec->vec.size) {\
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\" #class_name "::offsetSet($offset) index out of bounds");\
     }\
-    wasm_##name##_vec->vec.data[offset] = Z_RES_P(name##_val)->ptr;\
+    \
+    wasmer_res *name##_res = WASMER_RES_P(name##_val);\
+    name##_res->owned = false;\
+    \
+    wasm_##name##_vec->vec.data[offset] = WASMER_RES_INNER(name##_res, name);\
 }
 
 #define WASMER_DECLARE_VEC_OFFSET_UNSET(class_name)\
@@ -166,7 +177,7 @@ PHP_METHOD (Wasm_Vec_##class_name, offsetUnset) {\
 
 #define WASMER_DECLARE_OWN(name)\
 WASMER_IMPORT_RESOURCE(name)\
-WASMER_DELETE_WITHOUT_DTOR(name)\
+WASMER_DELETE_RESOURCE(name)\
 
 #define WASMER_DECLARE_TYPE(class_name, macro, name)\
 WASMER_DECLARE_OWN(name)\

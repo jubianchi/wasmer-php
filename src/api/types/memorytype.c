@@ -6,12 +6,11 @@
 #include "../macros.h"
 #include "../../wasmer.h"
 
+WASMER_DECLARE_TYPE(MemoryType, MEMORYTYPE, memorytype)
+
 WASMER_IMPORT_RESOURCE(externtype)
 WASMER_IMPORT_RESOURCE(limits)
-WASMER_IMPORT_RESOURCE(memorytype)
 WASMER_IMPORT_RESOURCE(valtype)
-
-WASMER_DECLARE_TYPE(MemoryType, MEMORYTYPE, memorytype)
 
 PHP_FUNCTION (wasm_memorytype_new) {
     zval *limits_val;
@@ -22,10 +21,11 @@ PHP_FUNCTION (wasm_memorytype_new) {
 
     WASMER_FETCH_RESOURCE(limits)
 
-    wasm_memorytype_t *memorytype = wasm_memorytype_new(Z_RES_P(limits_val)->ptr);
+    wasmer_res *memorytype = emalloc(sizeof(wasmer_res));
+    memorytype->inner.memorytype = wasm_memorytype_new(Z_RES_P(limits_val)->ptr);
+    memorytype->owned = true;
 
-    zend_resource *memorytype_res;
-    memorytype_res = zend_register_resource(memorytype, le_wasm_memorytype);
+    zend_resource *memorytype_res = zend_register_resource(memorytype, le_wasm_memorytype);
 
     RETURN_RES(memorytype_res);
 }
@@ -39,10 +39,10 @@ PHP_FUNCTION (wasm_memorytype_limits) {
 
     WASMER_FETCH_RESOURCE(memorytype)
 
-    const wasm_limits_t *limits = wasm_memorytype_limits(Z_RES_P(memorytype_val)->ptr);
+    // TODO(jubianchi): Handle limits ownership (not owned)
+    const wasm_limits_t *limits = wasm_memorytype_limits(WASMER_RES_P_INNER(memorytype_val, memorytype));
 
-    zend_resource *limits_res;
-    limits_res = zend_register_resource((void *) limits, le_wasm_limits);
+    zend_resource *limits_res = zend_register_resource((void *) limits, le_wasm_limits);
 
     RETURN_RES(limits_res);
 }
@@ -56,7 +56,12 @@ PHP_FUNCTION (wasm_memorytype_as_externtype) {
 
     WASMER_FETCH_RESOURCE(memorytype)
 
-    wasm_externtype_t *externtype = wasm_memorytype_as_externtype(Z_RES_P(memorytype_val)->ptr);
+    wasmer_res *memorytype_res = WASMER_RES_P(memorytype_val);
+    memorytype_res->owned = false;
+
+    wasmer_res *externtype = emalloc(sizeof(wasmer_res));
+    externtype->inner.externtype = wasm_memorytype_as_externtype(WASMER_RES_INNER(memorytype_res, memorytype));
+    externtype->owned = false;
 
     zend_resource *externtype_res;
     externtype_res = zend_register_resource(externtype, le_wasm_externtype);

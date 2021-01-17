@@ -8,7 +8,7 @@
 
 WASMER_IMPORT_RESOURCE(val)
 
-WASMER_DELETE_WITHOUT_DTOR(val)
+WASMER_DELETE_RESOURCE(val)
 
 PHP_FUNCTION (wasm_val_copy) {
     zval *val_val;

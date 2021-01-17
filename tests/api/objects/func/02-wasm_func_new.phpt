@@ -1,5 +1,5 @@
 --TEST--
-Module API: wasm_module_new
+Func API: wasm_func_new
 
 --FILE--
 <?php
@@ -66,6 +66,7 @@ class Sandbox {
 
 (new Sandbox())->run($store, $module, $functype);
 
+?>
 --EXPECTF--
 string(23) "Hello from PHP function"
 string(28) "Hello from PHP user function"

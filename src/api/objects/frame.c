@@ -6,8 +6,9 @@
 
 WASMER_IMPORT_RESOURCE(frame)
 
-WASMER_DELETE_WITHOUT_DTOR(frame)
-WASMER_COPY(frame)
+WASMER_DELETE_RESOURCE(frame)
+
+// TODO(jubianchi): Implement copy
 
 PHP_FUNCTION (wasm_frame_instance) {
     ZEND_PARSE_PARAMETERS_NONE();

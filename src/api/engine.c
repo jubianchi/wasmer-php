@@ -3,18 +3,21 @@
 
 #include "wasmer_wasm.h"
 
-#include "macros.h"
+#include "./macros.h"
+#include "../wasmer.h"
+
+WASMER_DECLARE_OWN(engine)
 
 WASMER_IMPORT_RESOURCE(config)
-WASMER_IMPORT_RESOURCE(engine)
 
 PHP_FUNCTION (wasm_engine_new) {
     ZEND_PARSE_PARAMETERS_NONE();
 
-    wasm_engine_t *engine = wasm_engine_new();
+    wasmer_res *engine = emalloc(sizeof(wasmer_res));
+    engine->inner.engine = wasm_engine_new();
+    engine->owned = true;
 
-    zend_resource *engine_res;
-    engine_res = zend_register_resource(engine, le_wasm_engine);
+    zend_resource *engine_res = zend_register_resource(engine, le_wasm_engine);
 
     RETURN_RES(engine_res);
 }
@@ -28,7 +31,9 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
 
     WASMER_FETCH_RESOURCE(config)
 
-    wasm_engine_t *engine = wasm_engine_new_with_config(Z_RES_P(config_val)->ptr);
+    wasmer_res *engine = emalloc(sizeof(wasmer_res));
+    engine->inner.engine = wasm_engine_new_with_config(WASMER_RES_P_INNER(config_val, config));
+    engine->owned = true;
 
     WASMER_HANDLE_ERROR
 
@@ -36,18 +41,4 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
     engine_res = zend_register_resource(engine, le_wasm_engine);
 
     RETURN_RES(engine_res);
-}
-
-PHP_FUNCTION (wasm_engine_delete) {
-    zval *engine_val;
-
-    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
-            Z_PARAM_RESOURCE(engine_val)
-    ZEND_PARSE_PARAMETERS_END();
-
-    WASMER_FETCH_RESOURCE(engine)
-
-    zend_list_close(Z_RES_P(engine_val));
-
-    RETURN_TRUE;
 }

@@ -13,7 +13,7 @@ PHP_FUNCTION (wasm_global_new) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_DELETE_WITHOUT_DTOR(global)
+WASMER_DELETE_RESOURCE(global)
 
 PHP_FUNCTION (wasm_global_type) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -37,7 +37,7 @@ PHP_FUNCTION (wasm_global_set) {
     zend_throw_error(NULL, "Not yet implemented");
 }
 
-WASMER_COPY(global)
+// TODO(jubianchi): Implement copy
 
 PHP_FUNCTION (wasm_global_as_extern) {
     ZEND_PARSE_PARAMETERS_NONE();

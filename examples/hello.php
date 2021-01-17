@@ -39,6 +39,7 @@ wasm_instance_delete($instance);
 echo 'Calling export...' . PHP_EOL;
 $args = new Wasm\Vec\Val();
 $results = new Wasm\Vec\Val();
+
 wasm_func_call($run, $args, $results);
 
 //wasm_extern_vec_delete($exports);

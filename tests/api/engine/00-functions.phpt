@@ -10,6 +10,7 @@ var_dump(
     function_exists('wasm_engine_delete'),
 );
 
+?>
 --EXPECTF--
 bool(true)
 bool(true)

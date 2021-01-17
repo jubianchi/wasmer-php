@@ -27,7 +27,12 @@ PHP_FUNCTION (wasm_exporttype_new) {
     name_vec->size = name_len;
     name_vec->data = name;
 
-    wasm_exporttype_t *exporttype = wasm_exporttype_new(name_vec, Z_RES_P(externtype_val)->ptr);
+    wasmer_res *externtype_res = WASMER_RES_P(externtype_val);
+    externtype_res->owned = false;
+
+    wasmer_res *exporttype = emalloc(sizeof(wasmer_res));
+    exporttype->inner.exporttype = wasm_exporttype_new(name_vec, WASMER_RES_INNER(externtype_res, externtype));
+    exporttype->owned = true;
 
     zend_resource *exporttype_res;
     exporttype_res = zend_register_resource(exporttype, le_wasm_exporttype);
@@ -44,7 +49,7 @@ PHP_FUNCTION (wasm_exporttype_name) {
 
     WASMER_FETCH_RESOURCE(exporttype)
 
-    const wasm_name_t *name = wasm_exporttype_name(Z_RES_P(exporttype_val)->ptr);
+    const wasm_name_t *name = wasm_exporttype_name(WASMER_RES_P_INNER(exporttype_val, exporttype));
 
     RETURN_STRINGL(name->data, name->size);
 }
@@ -58,10 +63,11 @@ PHP_FUNCTION (wasm_exporttype_type) {
 
     WASMER_FETCH_RESOURCE(exporttype)
 
-    const wasm_externtype_t *externtype = wasm_exporttype_type(Z_RES_P(exporttype_val)->ptr);
+    wasmer_res *externtype = emalloc(sizeof(wasmer_res));
+    externtype->inner.externtype = wasm_exporttype_type(WASMER_RES_P_INNER(exporttype_val, exporttype));
+    externtype->owned = false;
 
-    zend_resource *externtype_res;
-    externtype_res = zend_register_resource((void *) externtype, le_wasm_externtype);
+    zend_resource *externtype_res = zend_register_resource(externtype, le_wasm_externtype);
 
     RETURN_RES(externtype_res);
 }

@@ -8,6 +8,8 @@
 
 WASMER_DECLARE_OWN(func)
 
+extern zend_class_entry *wasm_vec_val_ce;
+
 WASMER_IMPORT_RESOURCE(functype)
 WASMER_IMPORT_RESOURCE(store)
 WASMER_IMPORT_RESOURCE(extern)
@@ -25,11 +27,61 @@ wasm_trap_t *func_trampoline(void *env, const wasm_val_vec_t *args, wasm_val_vec
 
     zend_fcall_info fci = fenv->fci;
     fci.retval = &retval;
-    fci.object = NULL;
+    fci.param_count = args->size;
+    fci.params = emalloc(fci.param_count * sizeof(zval));
+
+    for (int i = 0; i < args->size; i++) {
+        wasm_val_t val = args->data[i];
+
+        switch (val.kind) {
+            case WASM_I32:
+                ZVAL_LONG(&fci.params[i], val.of.i32);
+                break;
+
+            case WASM_I64:
+                ZVAL_LONG(&fci.params[i], val.of.i64);
+                break;
+
+            case WASM_F32:
+                ZVAL_DOUBLE(&fci.params[i], val.of.f32);
+                break;
+
+            case WASM_F64:
+                ZVAL_DOUBLE(&fci.params[i], val.of.f64);
+                break;
+
+            // TODO(jubianchi): Add default case (for anyref and funcref)
+        }
+    }
 
     // TODO(jubianchi): Fix tests
-    //zend_result res = zend_call_function(&fci, &fenv->fcc);
     zend_call_function(&fci, &fenv->fcc);
+    int type = Z_TYPE(retval);
+
+    wasm_val_t *val = emalloc(sizeof(wasm_val_t));
+
+    switch (type) {
+        case IS_LONG:
+            val->kind = WASM_I32;
+            val->of.i32 = zval_get_long(&retval);
+            results->data[0] = *val;
+            break;
+
+        case IS_DOUBLE:
+            val->kind = WASM_F32;
+            val->of.f32 = 13;
+            results->data[0] = *val;
+            break;
+
+        case IS_ARRAY:
+            // TODO(jubianchi): Implement array return (multi value)
+            break;
+
+        // TODO(jubianchi): Add default case
+    }
+
+    efree(fci.params);
+    efree(val);
 
     return NULL;
 }
@@ -122,25 +174,32 @@ PHP_FUNCTION (wasm_func_result_arity) {
 PHP_FUNCTION (wasm_func_call) {
     zval *func_val;
     zval *args_val;
-    zval *results_val;
 
-    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 3, 3)
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 2, 2)
             Z_PARAM_RESOURCE(func_val)
             Z_PARAM_OBJECT(args_val)
-            Z_PARAM_OBJECT(results_val)
     ZEND_PARSE_PARAMETERS_END();
 
     WASMER_FETCH_RESOURCE(func)
 
     wasm_func_t *func = WASMER_RES_P_INNER(func_val, func);
     wasm_val_vec_c *args = Z_WASM_VAL_VEC_P(args_val);
-    wasm_val_vec_c *results = Z_WASM_VAL_VEC_P(results_val);
+
+    wasm_val_vec_t *vals = emalloc(sizeof(wasm_val_vec_t));
 
     // TODO(jubianchi): Implements traps
     // TODO(jubianchi): Implements results
-    wasm_func_call(func, &args->vec, &results->vec);
+    wasm_func_call(func, &args->vec, vals);
 
-    RETURN_TRUE;
+    // TODO(jubianchi): Handle vec ownership (not owned)
+    zval obj;
+    object_init_ex(&obj, wasm_vec_val_ce);
+    wasm_val_vec_c *results = Z_WASM_VAL_VEC_P(&obj);
+    results->vec = *vals;
+
+    efree(vals);
+
+    RETURN_OBJ(Z_OBJ(obj));
 }
 
 PHP_FUNCTION (wasm_func_as_extern) {

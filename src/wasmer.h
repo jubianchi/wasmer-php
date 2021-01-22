@@ -21,6 +21,7 @@ typedef struct wasmer_res {
         wasm_table_t *table;
         wasm_memory_t *memory;
         wasm_func_t *func;
+        wasm_val_t val;
     } inner;
 } wasmer_res;
 
@@ -73,10 +74,7 @@ Z_WASMER_DECLARE_CE_STRUCT(exporttype)
 Z_WASMER_DECLARE_CE_STRUCT(functype)
 #define Z_WASM_FUNCTYPE_VEC_P(zv) Z_WASMER_DECLARE_CE_P(functype, zv)
 
-typedef struct wasm_extern_vec_c {
-    wasm_extern_vec_t vec;
-    zend_object std;
-} wasm_extern_vec_c;
+Z_WASMER_DECLARE_CE_STRUCT(extern)
 #define Z_WASM_EXTERN_VEC_P(zv) ((wasm_extern_vec_c*)((char*)(Z_OBJ_P(zv)) - XtOffsetOf(wasm_extern_vec_c, std)))
 
 Z_WASMER_DECLARE_CE_STRUCT(val)

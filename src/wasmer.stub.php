@@ -417,6 +417,8 @@ namespace {
 
     /** @param resource $val */
     function wasm_val_delete($val): bool {}
+    /** @param resource $val */
+    function wasm_val_value($val): mixed {}
     /**
      * @param resource $val
      *
@@ -510,7 +512,7 @@ namespace {
      */
     function wasm_func_type($func) {}
     /** @param resource $func */
-    function wasm_func_call($func, Wasm\Vec\Val $args, Wasm\Vec\Val $results): bool {}
+    function wasm_func_call($func, Wasm\Vec\Val $args): Wasm\Vec\Val {}
     /**
      * @param resource $func
      *

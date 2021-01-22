@@ -73,6 +73,18 @@ WASMER_RESOURCE_LE(memory)
 WASMER_RESOURCE_LE(table)
 WASMER_RESOURCE_LE(trap)
 WASMER_RESOURCE_LE(val)
+static ZEND_RSRC_DTOR_FUNC(wasm_val_dtor) {
+    wasmer_res *val_res = (wasmer_res*)res->ptr;
+    wasm_val_t wasm_val = val_res->inner.val;
+
+    if (val_res->owned) {
+        wasm_val_delete(&wasm_val);
+    }
+
+    if (res->ptr != NULL) {
+        efree(res->ptr);
+    }
+}
 Z_WASMER_DECLARE_CE(val)
 
 /*
@@ -123,7 +135,7 @@ PHP_MINIT_FUNCTION (wasmer) {
     ///////////////////////////////////////////////////////////////////////////////
     // Runtime Objects
 
-    WASMER_RESOURCE_REGISTER(val)
+    WASMER_RESOURCE_REGISTER_WITH_DTOR(val)
     Z_WASMER_DECLARE_VEC_CLASS(Val, val)
     // TODO(jubianchi): references
     WASMER_RESOURCE_REGISTER(frame)

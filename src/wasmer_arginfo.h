@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 36f285a2769746df39b86f866974a7d9c1c4cdf7 */
+ * Stub hash: c5eb3eec2447143b365bddf10ffb4986fce1223a */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -197,6 +197,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_val_delete, 0, 1, _IS_BOOL,
 	ZEND_ARG_INFO(0, val)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_val_value, 0, 1, IS_MIXED, 0)
+	ZEND_ARG_INFO(0, val)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_val_copy, 0, 0, 1)
 	ZEND_ARG_INFO(0, val)
 ZEND_END_ARG_INFO()
@@ -262,10 +266,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_func_type, 0, 0, 1)
 	ZEND_ARG_INFO(0, func)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_func_call, 0, 3, _IS_BOOL, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_wasm_func_call, 0, 2, Wasm\\Vec\\Val, 0)
 	ZEND_ARG_INFO(0, func)
 	ZEND_ARG_OBJ_INFO(0, args, Wasm\\Vec\\Val, 0)
-	ZEND_ARG_OBJ_INFO(0, results, Wasm\\Vec\\Val, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_wasm_func_as_extern arginfo_wasm_func_type
@@ -507,6 +510,7 @@ ZEND_FUNCTION(wasm_exporttype_name);
 ZEND_FUNCTION(wasm_exporttype_type);
 ZEND_FUNCTION(wasm_exporttype_copy);
 ZEND_FUNCTION(wasm_val_delete);
+ZEND_FUNCTION(wasm_val_value);
 ZEND_FUNCTION(wasm_val_copy);
 ZEND_FUNCTION(wasm_val_i32);
 ZEND_FUNCTION(wasm_val_i64);
@@ -655,6 +659,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_exporttype_type, arginfo_wasm_exporttype_type)
 	ZEND_FE(wasm_exporttype_copy, arginfo_wasm_exporttype_copy)
 	ZEND_FE(wasm_val_delete, arginfo_wasm_val_delete)
+	ZEND_FE(wasm_val_value, arginfo_wasm_val_value)
 	ZEND_FE(wasm_val_copy, arginfo_wasm_val_copy)
 	ZEND_FE(wasm_val_i32, arginfo_wasm_val_i32)
 	ZEND_FE(wasm_val_i64, arginfo_wasm_val_i64)

@@ -12,6 +12,7 @@ $vec = new Wasm\Vec\Val(2);
 var_dump($vec);
 var_dump(count($vec));
 
+// TODO(jubianchi): Fix this test
 $functype1 = wasm_functype_new(new Wasm\Vec\ValType(), new Wasm\Vec\ValType());
 $functype2 = wasm_functype_new(new Wasm\Vec\ValType(), new Wasm\Vec\ValType());
 $functype3 = wasm_functype_new(new Wasm\Vec\ValType(), new Wasm\Vec\ValType());

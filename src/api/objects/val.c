@@ -6,9 +6,35 @@
 #include "../macros.h"
 #include "../../wasmer.h"
 
-WASMER_IMPORT_RESOURCE(val)
+WASMER_DECLARE_OWN(val)
 
-WASMER_DELETE_RESOURCE(val)
+PHP_FUNCTION (wasm_val_value) {
+    zval *val_val;
+
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(val_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(val)
+
+    const wasm_val_t val = WASMER_RES_P_INNER(val_val, val);
+
+    switch (val.kind) {
+        case WASM_I32:
+            RETURN_LONG(val.of.i32);
+
+        case WASM_I64:
+            RETURN_LONG(val.of.i64);
+
+        case WASM_F32:
+            RETURN_DOUBLE(val.of.f32);
+
+        case WASM_F64:
+            RETURN_DOUBLE(val.of.f64);
+    }
+
+    RETURN_NULL();
+}
 
 PHP_FUNCTION (wasm_val_copy) {
     zval *val_val;
@@ -20,7 +46,7 @@ PHP_FUNCTION (wasm_val_copy) {
     WASMER_FETCH_RESOURCE(val)
 
     wasm_val_t val;
-    wasm_val_copy(&val, Z_RES_P(val_val)->ptr);
+    wasm_val_copy(&val, &WASMER_RES_P_INNER(val_val, val));
 
     WASMER_HANDLE_ERROR
 
@@ -39,8 +65,11 @@ PHP_FUNCTION (wasm_val_i32) {
 
     wasm_val_t val = {.kind = WASM_I32, .of = {.i32 = value}};
 
-    zend_resource *val_res;
-    val_res = zend_register_resource(&val, le_wasm_val);
+    wasmer_res *wam_val = emalloc(sizeof(wasmer_res));
+    wam_val->inner.val = val;
+    wam_val->owned = false;
+
+    zend_resource *val_res = zend_register_resource(wam_val, le_wasm_val);
 
     RETURN_RES(val_res);
 }
@@ -54,8 +83,11 @@ PHP_FUNCTION (wasm_val_i64) {
 
     wasm_val_t val = {.kind = WASM_I64, .of = {.i64 = value}};
 
-    zend_resource *val_res;
-    val_res = zend_register_resource(&val, le_wasm_val);
+    wasmer_res *wam_val = emalloc(sizeof(wasmer_res));
+    wam_val->inner.val = val;
+    wam_val->owned = false;
+
+    zend_resource *val_res = zend_register_resource(wam_val, le_wasm_val);
 
     RETURN_RES(val_res);
 }
@@ -69,8 +101,11 @@ PHP_FUNCTION (wasm_val_f32) {
 
     wasm_val_t val = {.kind = WASM_F32, .of = {.f32 = value}};
 
-    zend_resource *val_res;
-    val_res = zend_register_resource(&val, le_wasm_val);
+    wasmer_res *wam_val = emalloc(sizeof(wasmer_res));
+    wam_val->inner.val = val;
+    wam_val->owned = false;
+
+    zend_resource *val_res = zend_register_resource(wam_val, le_wasm_val);
 
     RETURN_RES(val_res);
 }
@@ -84,8 +119,11 @@ PHP_FUNCTION (wasm_val_f64) {
 
     wasm_val_t val = {.kind = WASM_F64, .of = {.f64 = value}};
 
-    zend_resource *val_res;
-    val_res = zend_register_resource(&val, le_wasm_val);
+    wasmer_res *wam_val = emalloc(sizeof(wasmer_res));
+    wam_val->inner.val = val;
+    wam_val->owned = false;
+
+    zend_resource *val_res = zend_register_resource(wam_val, le_wasm_val);
 
     RETURN_RES(val_res);
 }
@@ -113,7 +151,10 @@ PHP_METHOD (Wasm_Vec_Val, __construct) {
         zend_ulong index;
 
         ZEND_HASH_REVERSE_FOREACH_NUM_KEY_VAL(vals_ht, index, tmp) {
-                vec.data[index] = *((wasm_val_t*)Z_RES_P(tmp)->ptr);
+                wasmer_res *val_res = WASMER_RES_P(tmp);
+                val_res->owned = false;
+
+                vec.data[index] = WASMER_RES_INNER(val_res, val);
         } ZEND_HASH_FOREACH_END();
     } else {
         wasm_val_vec_new_uninitialized(&vec, size);
@@ -158,13 +199,16 @@ PHP_METHOD (Wasm_Vec_Val, offsetGet) {
     if(offset >= wasm_val_vec->vec.size) {
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\Val::offsetGet($offset) index out of bounds");
     }
+
     if(&wasm_val_vec->vec.data[offset] == NULL) {
         RETURN_NULL();
     }
-    zend_resource *extern_res;
-    extern_res = zend_register_resource(&wasm_val_vec->vec.data[offset], le_wasm_val);
 
-    RETURN_RES(extern_res);
+    wasmer_res *val_res = emalloc(sizeof(wasmer_res));
+    val_res->inner.val = wasm_val_vec->vec.data[offset];
+    val_res->owned = false;
+
+    RETURN_RES(zend_register_resource(val_res, le_wasm_val));
 }
 
 PHP_METHOD (Wasm_Vec_Val, offsetSet) {
@@ -184,7 +228,10 @@ PHP_METHOD (Wasm_Vec_Val, offsetSet) {
         zend_throw_exception_ex(zend_ce_exception, 0, "Wasm\\Vec\\Val::offsetSet($offset) index out of bounds");
     }
 
-    wasm_val_vec->vec.data[offset] = *((wasm_val_t*)Z_RES_P(val_val)->ptr);
+    wasmer_res *val_res = WASMER_RES_P(val_val);
+    val_res->owned = false;
+
+    wasm_val_vec->vec.data[offset] = WASMER_RES_INNER(val_res, val);
 }
 
 PHP_METHOD (Wasm_Vec_Val, offsetUnset) {\

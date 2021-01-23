@@ -13,8 +13,8 @@ WASMER_IMPORT_RESOURCE(module)
 extern zend_class_entry *wasm_vec_extern_ce;
 
 WASMER_DECLARE_OWN(instance)
+WASMER_COPY(instance)
 
-// TODO(jubianchi): Implements imports
 PHP_FUNCTION (wasm_instance_new) {
     zval *store_val;
     zval *module_val;
@@ -56,17 +56,15 @@ PHP_FUNCTION (wasm_instance_exports) {
 
     wasm_instance_t *instance = WASMER_RES_P_INNER(instance_val, instance);
 
-    wasm_extern_vec_t externs;
-    wasm_instance_exports(instance, &externs);
+    wasm_extern_vec_t *externs = emalloc(sizeof(wasm_extern_vec_t));
+    wasm_instance_exports(instance, externs);
 
     zval obj;
     object_init_ex(&obj, wasm_vec_extern_ce);
     wasm_extern_vec_c *ce = Z_WASM_EXTERN_VEC_P(&obj);
-    ce->vec = externs;
+    ce->vec = *externs;
 
-    //efree(externs);
+    efree(externs);
 
     RETURN_OBJ(Z_OBJ(obj));
 }
-
-// TODO(jubianchi): Implement copy

@@ -419,6 +419,8 @@ namespace {
     function wasm_val_delete($val): bool {}
     /** @param resource $val */
     function wasm_val_value($val): mixed {}
+    /** @param resource $val */
+    function wasm_val_kind($val): int {}
     /**
      * @param resource $val
      *
@@ -492,7 +494,12 @@ namespace {
      * @param resource $module
      */
     function wasm_module_set_name($module, string $name): bool {}
-
+    /**
+     * @param resource $module
+     *
+     * @return resource
+     */
+    function wasm_module_copy($module) {}
 
     // Function Instances
 
@@ -525,7 +532,50 @@ namespace {
     // Global Instances
 
     // TODO(jubianchi): Add global
-
+    /**
+     * @param resource $store
+     * @param resource $globaltype
+     * @param resource $val
+     *
+     * @return resource
+     */
+    function wasm_global_new($store, $globaltype, $val) {}
+    /** @param resource $global */
+    function wasm_global_delete($global): bool {}
+    /**
+     * @param resource $global
+     *
+     * @return resource
+     */
+    function wasm_global_type($global) {}
+    /**
+     * @param resource $global
+     *
+     * @return resource
+     */
+    function wasm_global_get($global) {}
+    /**
+     * @param resource $global
+     * @param resource $val
+     */
+    function wasm_global_set($global, $val): void {}
+    /**
+     * @param resource $global
+     *
+     * @return resource
+     */
+    function wasm_global_copy($global) {}
+    /**
+     * @param resource $left
+     * @param resource $right
+     */
+    function wasm_global_same($left, $right): bool {}
+    /**
+     * @param resource $global
+     *
+     * @return resource
+     */
+    function wasm_global_as_extern($global) {}
 
     // Table Instances
 
@@ -581,6 +631,12 @@ namespace {
      * @return resource
      */
     function wasm_instance_exports($instance): Wasm\Vec\Extern {}
+    /**
+     * @param resource $instance
+     *
+     * @return resource
+     */
+    function wasm_instance_copy($instance) {}
 
     // Wasmer API
 

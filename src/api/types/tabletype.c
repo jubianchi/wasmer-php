@@ -63,10 +63,10 @@ PHP_FUNCTION (wasm_tabletype_limits) {
 
     WASMER_FETCH_RESOURCE(tabletype)
 
-    // TODO(jubianchi): Handle limits ownership (not owned)
-    const wasm_limits_t *limits = wasm_tabletype_limits(WASMER_RES_P_INNER(tabletype_val, tabletype));
+    wasmer_res *wasm_limits = emalloc(sizeof(wasmer_res));
+    wasm_limits->inner.limits = *wasm_tabletype_limits(WASMER_RES_P_INNER(tabletype_val, tabletype));
 
-    zend_resource *limits_res = zend_register_resource((void *) limits, le_wasm_limits);
+    zend_resource *limits_res = zend_register_resource(wasm_limits, le_wasm_limits);
 
     RETURN_RES(limits_res);
 }

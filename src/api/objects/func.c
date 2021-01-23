@@ -185,19 +185,21 @@ PHP_FUNCTION (wasm_func_call) {
     wasm_func_t *func = WASMER_RES_P_INNER(func_val, func);
     wasm_val_vec_c *args = Z_WASM_VAL_VEC_P(args_val);
 
-    wasm_val_vec_t *vals = emalloc(sizeof(wasm_val_vec_t));
+    // TODO(jubianchi): Throw if args size is different from wasm_func_param_arity
+
+    wasm_val_vec_t *results = emalloc(sizeof(wasm_val_vec_t));
+    wasm_val_vec_new_uninitialized(results, wasm_func_result_arity(func));
 
     // TODO(jubianchi): Implements traps
-    // TODO(jubianchi): Implements results
-    wasm_func_call(func, &args->vec, vals);
+    wasm_func_call(func, &args->vec, results);
 
     // TODO(jubianchi): Handle vec ownership (not owned)
     zval obj;
     object_init_ex(&obj, wasm_vec_val_ce);
-    wasm_val_vec_c *results = Z_WASM_VAL_VEC_P(&obj);
-    results->vec = *vals;
+    wasm_val_vec_c *ce = Z_WASM_VAL_VEC_P(&obj);
+    ce->vec = *results;
 
-    efree(vals);
+    efree(results);
 
     RETURN_OBJ(Z_OBJ(obj));
 }

@@ -6,12 +6,13 @@
 #include "../macros.h"
 #include "../../wasmer.h"
 
+WASMER_DECLARE_OWN(module)
+WASMER_COPY(module)
+
 WASMER_IMPORT_RESOURCE(store)
 
 extern zend_class_entry *wasm_vec_importtype_ce;
 extern zend_class_entry *wasm_vec_exporttype_ce;
-
-WASMER_DECLARE_OWN(module)
 
 PHP_FUNCTION (wasm_module_new) {
     zval *store_val;
@@ -81,7 +82,7 @@ PHP_FUNCTION (wasm_module_imports) {
     wasm_importtype_vec_t *importtypes = emalloc(sizeof(wasm_exporttype_vec_t));
     wasm_module_imports(WASMER_RES_P_INNER(module_val, module), importtypes);
 
-    // TODO(jubianchi): Handle vec ownership (not owned)
+    // TODO(jubianchi): Handle vec ownership (owned)
     zval obj;
     object_init_ex(&obj, wasm_vec_importtype_ce);
     wasm_importtype_vec_c *ce = Z_WASM_IMPORTTYPE_VEC_P(&obj);
@@ -104,7 +105,7 @@ PHP_FUNCTION (wasm_module_exports) {
     wasm_exporttype_vec_t *exporttypes = emalloc(sizeof(wasm_exporttype_vec_t));
     wasm_module_exports(WASMER_RES_P_INNER(module_val, module), exporttypes);
 
-    // TODO(jubianchi): Handle vec ownership (not owned)
+    // TODO(jubianchi): Handle vec ownership (owned)
     zval obj;
     object_init_ex(&obj, wasm_vec_exporttype_ce);
     wasm_exporttype_vec_c *ce = Z_WASM_EXPORTTYPE_VEC_P(&obj);
@@ -206,5 +207,3 @@ PHP_FUNCTION (wasm_module_set_name) {
 
     RETURN_BOOL(result);
 }
-
-// TODO(jubianchi): Implement copy

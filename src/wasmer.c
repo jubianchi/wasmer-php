@@ -17,7 +17,7 @@
 // Runtime Environment
 
 WASMER_RESOURCE_LE(config)
-static ZEND_RSRC_DTOR_FUNC(wasm_config_dtor) { \
+static ZEND_RSRC_DTOR_FUNC(wasm_config_dtor) {
     efree(res->ptr);
 }
 WASMER_RESOURCE(engine)
@@ -27,23 +27,25 @@ WASMER_RESOURCE(store)
 // Type Representations
 
 WASMER_RESOURCE(valtype)
-Z_WASMER_DECLARE_CE(valtype)
+WASMER_DECLARE_CE(valtype)
 WASMER_RESOURCE(functype)
-Z_WASMER_DECLARE_CE(functype)
+WASMER_DECLARE_CE(functype)
 WASMER_RESOURCE(globaltype)
-Z_WASMER_DECLARE_CE(globaltype)
-// TODO(jubianchi): limits
+WASMER_DECLARE_CE(globaltype)
 WASMER_RESOURCE_LE(limits)
+static ZEND_RSRC_DTOR_FUNC(wasm_limits_dtor) {
+    efree(res->ptr);
+}
 WASMER_RESOURCE(tabletype)
-Z_WASMER_DECLARE_CE(tabletype)
+WASMER_DECLARE_CE(tabletype)
 WASMER_RESOURCE(memorytype)
-Z_WASMER_DECLARE_CE(memorytype)
+WASMER_DECLARE_CE(memorytype)
 WASMER_RESOURCE(externtype)
-Z_WASMER_DECLARE_CE(externtype)
+WASMER_DECLARE_CE(externtype)
 WASMER_RESOURCE(importtype)
-Z_WASMER_DECLARE_CE(importtype)
+WASMER_DECLARE_CE(importtype)
 WASMER_RESOURCE(exporttype)
-Z_WASMER_DECLARE_CE(exporttype)
+WASMER_DECLARE_CE(exporttype)
 
 ///////////////////////////////////////////////////////////////////////////////
 // Runtime Objects
@@ -62,12 +64,12 @@ static ZEND_RSRC_DTOR_FUNC(wasm_extern_dtor) {
         efree(res->ptr);
     }
 }
-Z_WASMER_DECLARE_CE(extern)
+WASMER_DECLARE_CE(extern)
 
 WASMER_RESOURCE_LE(foreign)
 WASMER_RESOURCE_LE(frame)
 WASMER_RESOURCE(func)
-WASMER_RESOURCE_LE(global)
+WASMER_RESOURCE(global)
 WASMER_RESOURCE(instance)
 WASMER_RESOURCE_LE(memory)
 WASMER_RESOURCE_LE(table)
@@ -85,7 +87,7 @@ static ZEND_RSRC_DTOR_FUNC(wasm_val_dtor) {
         efree(res->ptr);
     }
 }
-Z_WASMER_DECLARE_CE(val)
+WASMER_DECLARE_CE(val)
 
 /*
 static zend_class_entry* fetch_internal_class(const char* class_name)
@@ -114,40 +116,39 @@ PHP_MINIT_FUNCTION (wasmer) {
     // Type Representations
 
     WASMER_RESOURCE_REGISTER_WITH_DTOR(valtype)
-    Z_WASMER_DECLARE_VEC_CLASS(ValType, valtype)
+    WASMER_DECLARE_VEC_CLASS(ValType, valtype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(functype)
-    Z_WASMER_DECLARE_VEC_CLASS(FuncType, functype)
+    WASMER_DECLARE_VEC_CLASS(FuncType, functype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(globaltype)
-    Z_WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
-    // TODO(jubianchi): limits
-    WASMER_RESOURCE_REGISTER(limits)
+    WASMER_DECLARE_VEC_CLASS(GlobalType, globaltype)
+    WASMER_RESOURCE_REGISTER_WITH_DTOR(limits)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(tabletype)
-    Z_WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
+    WASMER_DECLARE_VEC_CLASS(TableType, tabletype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(memorytype)
-    Z_WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
+    WASMER_DECLARE_VEC_CLASS(MemoryType, memorytype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(externtype)
-    Z_WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
+    WASMER_DECLARE_VEC_CLASS(ExternType, externtype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(importtype)
-    Z_WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
+    WASMER_DECLARE_VEC_CLASS(ImportType, importtype)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(exporttype)
-    Z_WASMER_DECLARE_VEC_CLASS(ExportType, exporttype)
+    WASMER_DECLARE_VEC_CLASS(ExportType, exporttype)
 
     ///////////////////////////////////////////////////////////////////////////////
     // Runtime Objects
 
     WASMER_RESOURCE_REGISTER_WITH_DTOR(val)
-    Z_WASMER_DECLARE_VEC_CLASS(Val, val)
+    WASMER_DECLARE_VEC_CLASS(Val, val)
     // TODO(jubianchi): references
     WASMER_RESOURCE_REGISTER(frame)
     WASMER_RESOURCE_REGISTER(trap)
     WASMER_RESOURCE_REGISTER(foreign)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(module)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(func)
-    WASMER_RESOURCE_REGISTER(global)
+    WASMER_RESOURCE_REGISTER_WITH_DTOR(global)
     WASMER_RESOURCE_REGISTER(table)
     WASMER_RESOURCE_REGISTER(memory)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(extern)
-    Z_WASMER_DECLARE_VEC_CLASS(Extern, extern)
+    WASMER_DECLARE_VEC_CLASS(Extern, extern)
     WASMER_RESOURCE_REGISTER_WITH_DTOR(instance)
 
     ///////////////////////////////////////////////////////////////////////////////

@@ -36,6 +36,18 @@ PHP_FUNCTION (wasm_val_value) {
     RETURN_NULL();
 }
 
+PHP_FUNCTION (wasm_val_kind) {
+    zval *val_val;
+
+    ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 1, 1)
+            Z_PARAM_RESOURCE(val_val)
+    ZEND_PARSE_PARAMETERS_END();
+
+    WASMER_FETCH_RESOURCE(val)
+
+    RETURN_LONG(WASMER_RES_P_INNER(val_val, val).kind);
+}
+
 PHP_FUNCTION (wasm_val_copy) {
     zval *val_val;
 
@@ -65,11 +77,11 @@ PHP_FUNCTION (wasm_val_i32) {
 
     wasm_val_t val = {.kind = WASM_I32, .of = {.i32 = value}};
 
-    wasmer_res *wam_val = emalloc(sizeof(wasmer_res));
-    wam_val->inner.val = val;
-    wam_val->owned = false;
+    wasmer_res *wasm_val = emalloc(sizeof(wasmer_res));
+    wasm_val->inner.val = val;
+    wasm_val->owned = false;
 
-    zend_resource *val_res = zend_register_resource(wam_val, le_wasm_val);
+    zend_resource *val_res = zend_register_resource(wasm_val, le_wasm_val);
 
     RETURN_RES(val_res);
 }

@@ -47,6 +47,7 @@ PHP_FUNCTION (wasm_##name##_delete) {\
 }
 
 // TODO(jubianchi): Implement clone (via wasm_vec_##name##_copy)
+// TODO(jubianchi): Implement destruct (via wasm_vec_##name##_delete)
 #define WASMER_DECLARE_VEC(class_name, macro, name)\
 WASMER_DECLARE_VEC_CONSTRUCT(class_name, name, macro)\
 WASMER_DECLARE_VEC_COUNT(class_name, macro, name)\

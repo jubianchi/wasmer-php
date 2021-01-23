@@ -9,6 +9,9 @@
 WASMER_DECLARE_OWN(extern)
 
 WASMER_IMPORT_RESOURCE(func)
+WASMER_IMPORT_RESOURCE(global)
+WASMER_IMPORT_RESOURCE(table)
+WASMER_IMPORT_RESOURCE(memory)
 
 PHP_FUNCTION (wasm_extern_kind) {
     ZEND_PARSE_PARAMETERS_NONE();
@@ -53,7 +56,7 @@ PHP_FUNCTION (wasm_extern_as_global) {
     global->inner.global = wasm_extern_as_global(WASMER_RES_P_INNER(extern_val, xtern));
     global->owned = false;
 
-    RETURN_RES(zend_register_resource(global, le_wasm_func));
+    RETURN_RES(zend_register_resource(global, le_wasm_global));
 }
 
 PHP_FUNCTION (wasm_extern_as_table) {
@@ -69,7 +72,7 @@ PHP_FUNCTION (wasm_extern_as_table) {
     table->inner.table = wasm_extern_as_table(WASMER_RES_P_INNER(extern_val, xtern));
     table->owned = false;
 
-    RETURN_RES(zend_register_resource(table, le_wasm_func));
+    RETURN_RES(zend_register_resource(table, le_wasm_table));
 }
 
 PHP_FUNCTION (wasm_extern_as_memory) {
@@ -85,7 +88,7 @@ PHP_FUNCTION (wasm_extern_as_memory) {
     memory->inner.memory = wasm_extern_as_memory(WASMER_RES_P_INNER(extern_val, xtern));
     memory->owned = false;
 
-    RETURN_RES(zend_register_resource(memory, le_wasm_func));
+    RETURN_RES(zend_register_resource(memory, le_wasm_memory));
 }
 
 PHP_METHOD (Wasm_Vec_Extern, __construct) {

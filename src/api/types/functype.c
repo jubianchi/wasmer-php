@@ -21,9 +21,9 @@ PHP_FUNCTION (wasm_functype_new) {
             Z_PARAM_OBJECT(results_val)
     ZEND_PARSE_PARAMETERS_END();
 
-    // TODO(jubianchi): Handle vec ownership (not owned)
+    // TODO(jubianchi): Handle vec ownership (ownership transfered)
     wasm_valtype_vec_c *params = Z_WASM_VALTYPE_VEC_P(params_val);
-    // TODO(jubianchi): Handle vec ownership (not owned)
+    // TODO(jubianchi): Handle vec ownership (ownership transfered)
     wasm_valtype_vec_c *results = Z_WASM_VALTYPE_VEC_P(results_val);
 
     wasmer_res *functype = emalloc(sizeof(wasmer_res));

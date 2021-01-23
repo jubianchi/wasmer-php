@@ -3,6 +3,7 @@
 #include "wasm.h"
 
 #include "../macros.h"
+#include "../../wasmer.h"
 
 WASMER_IMPORT_RESOURCE(limits)
 
@@ -15,14 +16,11 @@ PHP_FUNCTION (wasm_limits_new) {
             Z_PARAM_NUMBER(max_val)
     ZEND_PARSE_PARAMETERS_END();
 
-    int min = zval_get_double(min_val);
-    int max = zval_get_double(max_val);
-    wasm_limits_t *limits = malloc(sizeof(wasm_limits_t));
-    limits->min = min;
-    limits->max = max;
+    wasm_limits_t limits = {.min = zval_get_long(min_val), .max = zval_get_long(max_val)};
+    wasmer_res *wasm_limits = emalloc(sizeof(wasmer_res));
+    wasm_limits->inner.limits = limits;
 
-    zend_resource *limits_res;
-    limits_res = zend_register_resource(limits, le_wasm_limits);
+    zend_resource *limits_res = zend_register_resource(wasm_limits, le_wasm_limits);
 
     RETURN_RES(limits_res);
 }
@@ -36,9 +34,9 @@ PHP_FUNCTION (wasm_limits_min) {
 
     WASMER_FETCH_RESOURCE(limits)
 
-    wasm_limits_t *limits = Z_RES_P(limits_val)->ptr;
+    wasm_limits_t limits = WASMER_RES_P_INNER(limits_val, limits);
 
-    RETURN_LONG(limits->min);
+    RETURN_LONG(limits.min);
 }
 
 PHP_FUNCTION (wasm_limits_max) {
@@ -50,7 +48,7 @@ PHP_FUNCTION (wasm_limits_max) {
 
     WASMER_FETCH_RESOURCE(limits)
 
-    wasm_limits_t *limits = Z_RES_P(limits_val)->ptr;
+    wasm_limits_t limits = WASMER_RES_P_INNER(limits_val, limits);
 
-    RETURN_LONG(limits->max);
+    RETURN_LONG(limits.max);
 }

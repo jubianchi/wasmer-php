@@ -13,6 +13,7 @@ typedef struct wasmer_res {
         wasm_externtype_t *externtype;
         wasm_importtype_t *importtype;
         wasm_valtype_t *valtype;
+        wasm_limits_t limits;
 
         wasm_global_t *global;
         wasm_instance_t *instance;

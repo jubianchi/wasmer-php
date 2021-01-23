@@ -38,10 +38,7 @@ wasm_instance_delete($instance);
 
 echo 'Calling export...' . PHP_EOL;
 $args = new Wasm\Vec\Val();
-
 $results = wasm_func_call($run, $args);
-
-//wasm_extern_vec_delete($exports);
 
 echo 'Shutting down...' . PHP_EOL;
 wasm_store_delete($store);

@@ -102,6 +102,85 @@ You can go through more advanced examples in the [dedicated directory][examples]
 
 [examples]: ./examples
 
+# Supported platforms and features
+
+## Platforms
+
+| Platform | Architecture | Status |
+|----------|--------------|:------:|
+| Linux    | `amd64`      | ✅      |
+| Linux    | `aarch64`    | ❌      |
+| Windows  | `amd64`      | ❌      |
+| Darwin   | `amd64`      | ✅      |
+| Darwin   | `aarch64`    | ❌      |
+
+| PHP | Status |
+|-----|:------:|
+| 8.0 | ✅      |
+| 7.4 | ❌      |
+| 7.3 | ❌      |
+
+## Features
+
+## Compilers and engines
+
+| Compiler   | Status |
+|------------|:------:|
+| Cranelift  | ❌      |
+| LLVM       | ❌      |
+| Singlepass | ✅      |
+
+| Engine      | Status |
+|-------------|:------:|
+| Native      | ❌      |
+| JIT         | ✅      | 
+| Object File | ❌      |
+
+## Runtime
+
+| Object      | Status |
+|-------------|:------:|
+| config      | ✅      |
+| engine      | ✅      | 
+| store       | ✅      |
+
+## Types
+
+| Type       | Status |
+|------------|:------:|
+| valtype    | ✅      |
+| functype   | ✅      |
+| globaltype | ✅      |
+| tabletype  | ✅      |
+| memorytype | ✅      |
+| externtype | ✅      |
+| importtype | ✅      |
+| exporttype | ✅      |
+
+## Objects
+
+| Object | Status |
+|----------|:------:|
+| val      | ✅      |
+| frame    | 🧑‍💻      |
+| trap     | 🧑‍💻      |
+| foreign  | ✅      |
+| module   | ✅      |
+| func     | ✅      |
+| global   | ✅      |
+| table    | ✅      |
+| memory   | ✅      |
+| extern   | ✅      |
+| instance | ✅      |
+
+## Misc
+
+| Feature           | Status |
+|-------------------|:------:|
+| WAT               | ✅      |
+| WASI              | ❌      |
+| Cross Compilation | ❌      |
+
 # License
 
 The entire project is under the MIT License. Please read [the

@@ -35,7 +35,9 @@ PHP_FUNCTION (wasm_engine_new_with_config) {
     engine->inner.engine = wasm_engine_new_with_config(WASMER_RES_P_INNER(config_val, config));
     engine->owned = true;
 
-    WASMER_HANDLE_ERROR
+    WASMER_HANDLE_ERROR_START
+        efree(engine);
+    WASMER_HANDLE_ERROR_END
 
     zend_resource *engine_res;
     engine_res = zend_register_resource(engine, le_wasm_engine);

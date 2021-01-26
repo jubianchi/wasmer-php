@@ -135,7 +135,10 @@ namespace {
     function wasm_config_new() {}
     /** @param resource $config */
     function wasm_config_delete($config): bool {}
-
+    /** @param resource $config */
+    function wasm_config_set_compiler($config, int $compiler): bool {}
+    /** @param resource $config */
+    function wasm_config_set_engine($config, int $engine): bool {}
 
     // Engine
 

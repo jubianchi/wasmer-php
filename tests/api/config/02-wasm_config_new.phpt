@@ -1,5 +1,5 @@
 --TEST--
-Engine API: wasm_engine_new
+Config API: wasm_config_new
 
 --FILE--
 <?php

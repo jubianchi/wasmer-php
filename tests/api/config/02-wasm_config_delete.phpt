@@ -1,5 +1,5 @@
 --TEST--
-Config API: wasm_engine_delete
+Config API: wasm_config_delete
 
 --FILE--
 <?php

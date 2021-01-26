@@ -18,6 +18,7 @@
 
 WASMER_RESOURCE_LE(config)
 static ZEND_RSRC_DTOR_FUNC(wasm_config_dtor) {
+    // TODO(jubianchi): Add call to wasm_config_delete (see https://github.com/wasmerio/wasmer/pull/2054)
     efree(res->ptr);
 }
 WASMER_RESOURCE(engine)
@@ -153,6 +154,16 @@ PHP_MINIT_FUNCTION (wasmer) {
 
     ///////////////////////////////////////////////////////////////////////////////
     // Type Representations
+
+    // Engines
+    REGISTER_LONG_CONSTANT("WASM_ENGINE_JIT", JIT, CONST_CS | CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("WASM_ENGINE_NATIVE", NATIVE, CONST_CS | CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("WASM_ENGINE_OBJECT_FILE", OBJECT_FILE, CONST_CS | CONST_PERSISTENT);
+
+    // Compilers
+    REGISTER_LONG_CONSTANT("WASM_COMPILER_CRANELIFT", CRANELIFT, CONST_CS | CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("WASM_COMPILER_LLVM", LLVM, CONST_CS | CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("WASM_COMPILER_SINGLEPASS", SINGLEPASS, CONST_CS | CONST_PERSISTENT);
 
     // Type attributes
     REGISTER_LONG_CONSTANT("WASM_CONST", WASM_CONST, CONST_CS | CONST_PERSISTENT);

@@ -1,11 +1,21 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 0b58b08c70a886f56d53effcf1eeb153bdc34bfa */
+ * Stub hash: 3a4e0a73a2588e2c7e81aa23b8bc9d16347af76b */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_config_delete, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_INFO(0, config)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_config_set_compiler, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, config)
+	ZEND_ARG_TYPE_INFO(0, compiler, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_config_set_engine, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_INFO(0, config)
+	ZEND_ARG_TYPE_INFO(0, engine, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_wasm_engine_new arginfo_wasm_config_new
@@ -496,6 +506,8 @@ ZEND_END_ARG_INFO()
 
 ZEND_FUNCTION(wasm_config_new);
 ZEND_FUNCTION(wasm_config_delete);
+ZEND_FUNCTION(wasm_config_set_compiler);
+ZEND_FUNCTION(wasm_config_set_engine);
 ZEND_FUNCTION(wasm_engine_new);
 ZEND_FUNCTION(wasm_engine_new_with_config);
 ZEND_FUNCTION(wasm_engine_delete);
@@ -656,6 +668,8 @@ ZEND_METHOD(Wasm_Vec_Val, offsetUnset);
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_config_new, arginfo_wasm_config_new)
 	ZEND_FE(wasm_config_delete, arginfo_wasm_config_delete)
+	ZEND_FE(wasm_config_set_compiler, arginfo_wasm_config_set_compiler)
+	ZEND_FE(wasm_config_set_engine, arginfo_wasm_config_set_engine)
 	ZEND_FE(wasm_engine_new, arginfo_wasm_engine_new)
 	ZEND_FE(wasm_engine_new_with_config, arginfo_wasm_engine_new_with_config)
 	ZEND_FE(wasm_engine_delete, arginfo_wasm_engine_delete)

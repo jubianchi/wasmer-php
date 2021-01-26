@@ -36,6 +36,7 @@ PHP_FUNCTION (wasm_module_new) {
 
     WASMER_HANDLE_ERROR_START
             efree(wasm_vec);
+            efree(module);
     WASMER_HANDLE_ERROR_END
 
     zend_resource *module_res = zend_register_resource(module, le_wasm_module);

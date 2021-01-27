@@ -190,8 +190,16 @@ PHP_FUNCTION (wasm_func_call) {
     wasm_val_vec_t *results = emalloc(sizeof(wasm_val_vec_t));
     wasm_val_vec_new_uninitialized(results, wasm_func_result_arity(func));
 
-    // TODO(jubianchi): Implements traps
-    wasm_func_call(func, &args->vec, results);
+    wasm_trap_t *trap = wasm_func_call(func, &args->vec, results);
+
+    if (trap != NULL) {
+        wasm_byte_vec_t *message_vec = emalloc(sizeof(wasm_byte_vec_t));
+        wasm_trap_message(trap, message_vec);
+
+        zend_throw_exception_ex(zend_ce_exception, 0, "%s", message_vec->data);
+
+        efree(message_vec);
+    }
 
     // TODO(jubianchi): Handle vec ownership (not owned)
     zval obj;

@@ -122,6 +122,18 @@ namespace Wasm\Vec {
         /** @throw \Exception */
         public function offsetUnset(mixed $offset): void {}
     }
+
+    final class Frame implements \Countable, \ArrayAccess {
+        public function __construct(array|int|null $sizeOrFrames = null) {}
+        public function count(): int {}
+        public function offsetExists(mixed $offset): bool {}
+        /** @return resource */
+        public function offsetGet(mixed $offset): mixed {}
+        /** @param resource $value */
+        public function offsetSet(mixed $offset, mixed $value): void {}
+        /** @throw \Exception */
+        public function offsetUnset(mixed $offset): void {}
+    }
 }
 
 namespace {
@@ -448,13 +460,49 @@ namespace {
 
 
     // Frames
-
-    // TODO(jubianchi): Add frame
+    /**
+     * @param resource $frame
+     *
+     * @return resource
+     */
+    function wasm_frame_copy($frame) {}
+    /**
+     * @param resource $frame
+     *
+     * @return resource
+     */
+    function wasm_frame_instance($frame) {}
+    /** @param resource $frame */
+    function wasm_frame_func_index($frame): int {}
+    /** @param resource $frame */
+    function wasm_frame_func_offset($frame): int {}
+    /** @param resource $frame */
+    function wasm_frame_module_offset($frame): int {}
 
 
     // Traps
-
-    // TODO(jubianchi): Add trap
+    /**
+     * @param resource $store
+     *
+     * @return resource
+     */
+    function wasm_trap_new($store, string $message) {}
+    /**
+     * @param resource $trap
+     *
+     * @return resource
+     */
+    function wasm_trap_copy($trap) {}
+    /** @param resource $trap */
+    function wasm_trap_message($trap): string {}
+    /**
+     * @param resource $trap
+     *
+     * @return resource
+     */
+    function wasm_trap_origin($trap) {}
+    /** @param resource $trap */
+    function wasm_trap_trace($trap): \Wasm\Vec\Frame {}
 
 
     // Foreign Objects

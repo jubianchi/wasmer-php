@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 3a4e0a73a2588e2c7e81aa23b8bc9d16347af76b */
+ * Stub hash: a1851fe2cf53e834cd435f82eab24c9e6f17f4d5 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_config_new, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -230,6 +230,39 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_val_f32, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
 #define arginfo_wasm_val_f64 arginfo_wasm_val_f32
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_frame_copy, 0, 0, 1)
+	ZEND_ARG_INFO(0, frame)
+ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_frame_instance arginfo_wasm_frame_copy
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_frame_func_index, 0, 1, IS_LONG, 0)
+	ZEND_ARG_INFO(0, frame)
+ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_frame_func_offset arginfo_wasm_frame_func_index
+
+#define arginfo_wasm_frame_module_offset arginfo_wasm_frame_func_index
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_trap_new, 0, 0, 2)
+	ZEND_ARG_INFO(0, store)
+	ZEND_ARG_TYPE_INFO(0, message, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_trap_copy, 0, 0, 1)
+	ZEND_ARG_INFO(0, trap)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_wasm_trap_message, 0, 1, IS_STRING, 0)
+	ZEND_ARG_INFO(0, trap)
+ZEND_END_ARG_INFO()
+
+#define arginfo_wasm_trap_origin arginfo_wasm_trap_copy
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_wasm_trap_trace, 0, 1, Wasm\\Vec\\Frame, 0)
+	ZEND_ARG_INFO(0, trap)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_wasm_module_new, 0, 0, 2)
 	ZEND_ARG_INFO(0, store)
@@ -503,6 +536,20 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_Wasm_Vec_Val_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Wasm_Vec_Frame___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_MASK(0, sizeOrFrames, MAY_BE_ARRAY|MAY_BE_LONG|MAY_BE_NULL, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_Wasm_Vec_Frame_count arginfo_class_Wasm_Vec_ValType_count
+
+#define arginfo_class_Wasm_Vec_Frame_offsetExists arginfo_class_Wasm_Vec_ValType_offsetExists
+
+#define arginfo_class_Wasm_Vec_Frame_offsetGet arginfo_class_Wasm_Vec_ValType_offsetGet
+
+#define arginfo_class_Wasm_Vec_Frame_offsetSet arginfo_class_Wasm_Vec_ValType_offsetSet
+
+#define arginfo_class_Wasm_Vec_Frame_offsetUnset arginfo_class_Wasm_Vec_ValType_offsetUnset
+
 
 ZEND_FUNCTION(wasm_config_new);
 ZEND_FUNCTION(wasm_config_delete);
@@ -571,6 +618,16 @@ ZEND_FUNCTION(wasm_val_i32);
 ZEND_FUNCTION(wasm_val_i64);
 ZEND_FUNCTION(wasm_val_f32);
 ZEND_FUNCTION(wasm_val_f64);
+ZEND_FUNCTION(wasm_frame_copy);
+ZEND_FUNCTION(wasm_frame_instance);
+ZEND_FUNCTION(wasm_frame_func_index);
+ZEND_FUNCTION(wasm_frame_func_offset);
+ZEND_FUNCTION(wasm_frame_module_offset);
+ZEND_FUNCTION(wasm_trap_new);
+ZEND_FUNCTION(wasm_trap_copy);
+ZEND_FUNCTION(wasm_trap_message);
+ZEND_FUNCTION(wasm_trap_origin);
+ZEND_FUNCTION(wasm_trap_trace);
 ZEND_FUNCTION(wasm_module_new);
 ZEND_FUNCTION(wasm_module_delete);
 ZEND_FUNCTION(wasm_module_validate);
@@ -663,6 +720,12 @@ ZEND_METHOD(Wasm_Vec_Val, offsetExists);
 ZEND_METHOD(Wasm_Vec_Val, offsetGet);
 ZEND_METHOD(Wasm_Vec_Val, offsetSet);
 ZEND_METHOD(Wasm_Vec_Val, offsetUnset);
+ZEND_METHOD(Wasm_Vec_Frame, __construct);
+ZEND_METHOD(Wasm_Vec_Frame, count);
+ZEND_METHOD(Wasm_Vec_Frame, offsetExists);
+ZEND_METHOD(Wasm_Vec_Frame, offsetGet);
+ZEND_METHOD(Wasm_Vec_Frame, offsetSet);
+ZEND_METHOD(Wasm_Vec_Frame, offsetUnset);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -733,6 +796,16 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(wasm_val_i64, arginfo_wasm_val_i64)
 	ZEND_FE(wasm_val_f32, arginfo_wasm_val_f32)
 	ZEND_FE(wasm_val_f64, arginfo_wasm_val_f64)
+	ZEND_FE(wasm_frame_copy, arginfo_wasm_frame_copy)
+	ZEND_FE(wasm_frame_instance, arginfo_wasm_frame_instance)
+	ZEND_FE(wasm_frame_func_index, arginfo_wasm_frame_func_index)
+	ZEND_FE(wasm_frame_func_offset, arginfo_wasm_frame_func_offset)
+	ZEND_FE(wasm_frame_module_offset, arginfo_wasm_frame_module_offset)
+	ZEND_FE(wasm_trap_new, arginfo_wasm_trap_new)
+	ZEND_FE(wasm_trap_copy, arginfo_wasm_trap_copy)
+	ZEND_FE(wasm_trap_message, arginfo_wasm_trap_message)
+	ZEND_FE(wasm_trap_origin, arginfo_wasm_trap_origin)
+	ZEND_FE(wasm_trap_trace, arginfo_wasm_trap_trace)
 	ZEND_FE(wasm_module_new, arginfo_wasm_module_new)
 	ZEND_FE(wasm_module_delete, arginfo_wasm_module_delete)
 	ZEND_FE(wasm_module_validate, arginfo_wasm_module_validate)
@@ -875,5 +948,16 @@ static const zend_function_entry class_Wasm_Vec_Val_methods[] = {
 	ZEND_ME(Wasm_Vec_Val, offsetGet, arginfo_class_Wasm_Vec_Val_offsetGet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_Val, offsetSet, arginfo_class_Wasm_Vec_Val_offsetSet, ZEND_ACC_PUBLIC)
 	ZEND_ME(Wasm_Vec_Val, offsetUnset, arginfo_class_Wasm_Vec_Val_offsetUnset, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Wasm_Vec_Frame_methods[] = {
+	ZEND_ME(Wasm_Vec_Frame, __construct, arginfo_class_Wasm_Vec_Frame___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Frame, count, arginfo_class_Wasm_Vec_Frame_count, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Frame, offsetExists, arginfo_class_Wasm_Vec_Frame_offsetExists, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Frame, offsetGet, arginfo_class_Wasm_Vec_Frame_offsetGet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Frame, offsetSet, arginfo_class_Wasm_Vec_Frame_offsetSet, ZEND_ACC_PUBLIC)
+	ZEND_ME(Wasm_Vec_Frame, offsetUnset, arginfo_class_Wasm_Vec_Frame_offsetUnset, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

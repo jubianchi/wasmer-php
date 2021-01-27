@@ -33,12 +33,24 @@ PHP_FUNCTION (wasm_instance_new) {
     wasm_module_t *module = WASMER_RES_P_INNER(module_val, module);
     wasm_extern_vec_c *externs = Z_WASM_EXTERN_VEC_P(externs_val);
 
-    wasmer_res *instance = emalloc(sizeof(wasmer_res));
-    // TODO(jubianchi): Implements traps
-    instance->inner.instance = wasm_instance_new(store, module, &externs->vec, NULL);
-    instance->owned = true;
+    wasm_trap_t *trap;
+    memset(&trap, 0, sizeof(wasm_trap_t*));
+    wasm_instance_t *wasm_instance = wasm_instance_new(store, module, &externs->vec, &trap);
 
     WASMER_HANDLE_ERROR
+
+    if (trap != NULL) {
+        wasm_byte_vec_t *message_vec = emalloc(sizeof(wasm_byte_vec_t));
+        wasm_trap_message(trap, message_vec);
+
+        zend_throw_exception_ex(zend_ce_exception, 0, "%s", message_vec->data);
+
+        efree(message_vec);
+    }
+
+    wasmer_res *instance = emalloc(sizeof(wasmer_res));
+    instance->inner.instance = wasm_instance;
+    instance->owned = true;
 
     zend_resource *instance_res = zend_register_resource(instance, le_wasm_instance);
 

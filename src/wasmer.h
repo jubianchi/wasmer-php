@@ -23,6 +23,8 @@ typedef struct wasmer_res {
         wasm_memory_t *memory;
         wasm_func_t *func;
         wasm_val_t val;
+        wasm_frame_t *frame;
+        wasm_trap_t *trap;
     } inner;
 } wasmer_res;
 
@@ -80,3 +82,6 @@ Z_WASMER_DECLARE_CE_STRUCT(extern)
 
 Z_WASMER_DECLARE_CE_STRUCT(val)
 #define Z_WASM_VAL_VEC_P(zv) Z_WASMER_DECLARE_CE_P(val, zv)
+
+Z_WASMER_DECLARE_CE_STRUCT(frame)
+#define Z_WASM_FRAME_VEC_P(zv) Z_WASMER_DECLARE_CE_P(frame, zv)

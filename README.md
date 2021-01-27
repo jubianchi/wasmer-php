@@ -132,7 +132,7 @@ You can go through more advanced examples in the [dedicated directory][examples]
 
 | Engine      | Status |
 |-------------|:------:|
-| Native      | ❌      |
+| Native      | ✅      |
 | JIT         | ✅      | 
 | Object File | ❌      |
 
@@ -162,8 +162,8 @@ You can go through more advanced examples in the [dedicated directory][examples]
 | Object | Status |
 |----------|:------:|
 | val      | ✅      |
-| frame    | 🧑‍💻      |
-| trap     | 🧑‍💻      |
+| frame    | ✅      |
+| trap     | ✅      |
 | foreign  | ✅      |
 | module   | ✅      |
 | func     | ✅      |
